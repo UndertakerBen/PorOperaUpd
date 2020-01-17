@@ -214,6 +214,8 @@ namespace Portable_Opera_Updater
                 DownloadFile(1, 0, 2, 13, 12);
                 DownloadFile(2, 0, 3, 15, 14);
                 DownloadFile(3, 0, 4, 17, 16);
+                checkBox1.Enabled = false;
+                checkBox1.Checked = false;
             }
             NewMethod8(0, 0, 1, 10, 11);
             NewMethod8(1, 0, 2, 13, 12);
@@ -227,6 +229,8 @@ namespace Portable_Opera_Updater
                     DownloadFile(5, 1, 6, 21, 20);
                     DownloadFile(6, 1, 7, 23, 22);
                     DownloadFile(7, 1, 8, 25, 24);
+                    checkBox2.Enabled = false;
+                    checkBox2.Checked = false;
                 }
                 NewMethod8(4, 1, 5, 19, 18);
                 NewMethod8(5, 1, 6, 21, 20);
