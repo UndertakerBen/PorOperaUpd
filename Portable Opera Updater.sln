@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable Opera Updater", "Portable Opera Updater.csproj", "{A7849774-7AC9-4AFB-B5B0-DC3CDCC01F4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7849774-7AC9-4AFB-B5B0-DC3CDCC01F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7849774-7AC9-4AFB-B5B0-DC3CDCC01F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7849774-7AC9-4AFB-B5B0-DC3CDCC01F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7849774-7AC9-4AFB-B5B0-DC3CDCC01F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F16F714D-2D49-4E9E-B9BC-4B32FC3245DE}
+	EndGlobalSection
+EndGlobal
