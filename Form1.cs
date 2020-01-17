@@ -29,7 +29,6 @@ namespace Portable_Opera_Updater
             for (int i = 0; i <= 3; i++)
             {
                 WebRequest myWebRequest = WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
-                Console.WriteLine("\nThe Uri that was requested is {0}", myWebRequest.RequestUri);
                 WebResponse myWebResponse = myWebRequest.GetResponse();
 
                 string resUrl = myWebResponse.ResponseUri.ToString();
@@ -38,9 +37,7 @@ namespace Portable_Opera_Updater
                 myWebResponse.Close();
 
                 WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes&amp;sub=marine&amp;utm_tryagain=yes");
-                Console.WriteLine("\nThe Uri that was requested is {0}", myWebRequest2.RequestUri);
                 WebResponse myWebResponse2 = myWebRequest2.GetResponse();
-                File.AppendAllText(@"test3.txt", myWebResponse2.ResponseUri.ToString() + "\n");
 
                 string resUrl2 = myWebResponse2.ResponseUri.ToString();
                 string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
@@ -62,10 +59,6 @@ namespace Portable_Opera_Updater
             label6.Text = buildVersion[1];
             label7.Text = buildVersion[2];
             label8.Text = buildVersion[3];
-            for (int i = 0; i <= 7; i++)
-            {
-                File.AppendAllText(@"test1.txt", url[i] + "\n");
-            }
             if (culture1.Name != "de-DE")
             {
                 button10.Text = "Quit";
@@ -360,9 +353,7 @@ namespace Portable_Opera_Updater
                         label.Text = "Entpacken";
                     }
                     label.Text = "Entpacken";
-                    Console.WriteLine(i2[3] + "\n" + i2[4]);
                     string arguments = " x " + "\"" + @i2[3] + "\"" + " -o" + "\"" + @"Update\" + i2[4] + "\"" + " -y";
-                    Console.WriteLine(arguments);
                     Process process = new Process();
                     process.StartInfo.FileName = @"Bin\7zr.exe";
                     process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
@@ -464,7 +455,6 @@ namespace Portable_Opera_Updater
             File.Delete(@"Update\" + i2[4] + "\\launcher.exe");
             File.Delete(@"Update\" + i2[4] + "\\launcher.visualelementsmanifest.xml");
             File.Delete(@"Update\" + i2[4] + "\\Resources.pri");
-            Console.WriteLine(testm);
             Directory.Move(@"Update\" + i2[4] + "\\Assets", @i2[4] + "\\Assets");
             Directory.Move(@"Update\" + i2[4], @i2[4] + "\\" + testm.FileVersion);
             File.WriteAllText(i2[4] + "\\updates\\Version.log", testm.FileVersion + "|" + i2[6] + "|" + i2[5]);
