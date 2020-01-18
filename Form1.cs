@@ -12,33 +12,32 @@ namespace Portable_Opera_Updater
 {
     public partial class Form1 : Form
     {
-        private static readonly string[] product = new string[4] { "=www&opsys=Windows&product=Opera+GX", "=www&opsys=Windows&product=Opera developer", "=www&opsys=Windows&product=Opera beta", "=www&opsys=Windows" };
-        private static readonly string[] splitRing = new string[4] { "opera_gx", "opera-developer", "opera-beta", "desktop" };
-        private static readonly string[] ring = new string[8] { "Opera GX", "Developer", "Beta", "Stable", "Opera GX", "Developer", "Beta", "Stable" };
-        private static readonly string[] buildVersion = new string[8];
-        private static readonly string[] url = new string[8];
-        private static readonly string[] fileName = new string[8] { "Opera-GX-x86.exe", "Opera-Developer-x86.exe", "Opera-Beta-x86.exe", "Opera-Stable-x86.exe", "Opera-GX-x64.exe", "Opera-Developer-x64.exe", "Opera-Beta-x64.exe", "Opera-Stable-x64.exe" };
-        private static readonly string[] instDir = new string[9] { "Opera GX x86", "Opera Dev x86", "Opera Beta x86", "Opera Stable x86", "Opera GX x64", "Opera Dev x64", "Opera Beta x64", "Opera Stable x64", "Opera" };
-        private static readonly string[] arch = new string[2] { "x86", "x64" };
+        private readonly string[] product = new string[4] { "=www&opsys=Windows&product=Opera+GX", "=www&opsys=Windows&product=Opera developer", "=www&opsys=Windows&product=Opera beta", "=www&opsys=Windows" };
+        private readonly string[] splitRing = new string[8] { "opera_gx", "opera-developer", "opera-beta", "desktop", "opera_gx", "opera-developer", "opera-beta", "desktop" };
+        private readonly string[] tFileName = new string[8] { "opera_gx", "opera-developer", "opera-beta", "opera/desktop", "opera_gx", "opera-developer", "opera-beta", "opera/desktop" };
+        private readonly string[] sFileName = new string[8] { "Opera_GX", "Opera_Developer", "Opera_beta", "Opera", "Opera_GX", "Opera_Developer", "Opera_beta", "Opera" };
+        private readonly string[] ring = new string[8] { "Opera GX", "Developer", "Beta", "Stable", "Opera GX", "Developer", "Beta", "Stable" };
+        private readonly string[] buildVersion = new string[8];
+        private readonly string[] fileName = new string[8] { "Opera-GX-x86.exe", "Opera-Developer-x86.exe", "Opera-Beta-x86.exe", "Opera-Stable-x86.exe", "Opera-GX-x64.exe", "Opera-Developer-x64.exe", "Opera-Beta-x64.exe", "Opera-Stable-x64.exe" };
+        private readonly string[] instDir = new string[9] { "Opera GX x86", "Opera Dev x86", "Opera Beta x86", "Opera Stable x86", "Opera GX x64", "Opera Dev x64", "Opera Beta x64", "Opera Stable x64", "Opera" };
+        private readonly string[] arch = new string[2] { "x86", "x64" };
         private readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
         private readonly string deskDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         private readonly string applicationPath = Application.StartupPath;
         private readonly ToolTip toolTip = new ToolTip();
         public Form1()
         {
+            InitializeComponent();
             for (int i = 0; i <= 3; i++)
             {
                 WebRequest myWebRequest = WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
                 WebResponse myWebResponse = myWebRequest.GetResponse();
-
                 string resUrl = myWebResponse.ResponseUri.ToString();
                 string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
-                string[] resid = sresUrl.Split(new char[] { '=', '%' });
+                string[] resid = sresUrl.Split(new char[] { '=', '&' });
                 myWebResponse.Close();
-
-                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes&amp;sub=marine&amp;utm_tryagain=yes");
+                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=" + resid[4] + "&amp;nothanks=yes");
                 WebResponse myWebResponse2 = myWebRequest2.GetResponse();
-
                 string resUrl2 = myWebResponse2.ResponseUri.ToString();
                 string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
                 string[] iVersion = sresUrl2.Split(new char[] { '/' });
@@ -46,15 +45,6 @@ namespace Portable_Opera_Updater
                 buildVersion[(i + 4)] = iVersion[1];
                 myWebResponse2.Close();
             }
-            url[0] = "https://download3.operacdn.com/pub/opera_gx/" + buildVersion[0] + "/win/Opera_GX_" + buildVersion[0] + "_Setup.exe";
-            url[1] = "https://download3.operacdn.com/pub/opera-developer/" + buildVersion[1] + "/win/Opera_Developer_" + buildVersion[1] + "_Setup.exe";
-            url[2] = "https://download3.operacdn.com/pub/opera-beta/" + buildVersion[2] + "/win/Opera_beta_" + buildVersion[2] + "_Setup.exe";
-            url[3] = "https://download3.operacdn.com/pub/opera/desktop/" + buildVersion[3] + "/win/Opera_" + buildVersion[3] + "_Setup.exe";
-            url[4] = "https://download3.operacdn.com/pub/opera_gx/" + buildVersion[0] + "/win/Opera_GX_" + buildVersion[0] + "_Setup_x64.exe";
-            url[5] = "https://download3.operacdn.com/pub/opera-developer/" + buildVersion[1] + "/win/Opera_Developer_" + buildVersion[1] + "_Setup_x64.exe";
-            url[6] = "https://download3.operacdn.com/pub/opera-beta/" + buildVersion[2] + "/win/Opera_beta_" + buildVersion[2] + "_Setup_x64.exe";
-            url[7] = "https://download3.operacdn.com/pub/opera/desktop/" + buildVersion[3] + "/win/Opera_" + buildVersion[3] + "_Setup_x64.exe";
-            InitializeComponent();
             label5.Text = buildVersion[0];
             label6.Text = buildVersion[1];
             label7.Text = buildVersion[2];
@@ -248,7 +238,7 @@ namespace Portable_Opera_Updater
             if (checkBox3.Checked)
             {
                 WebClient myWebClient = new WebClient();
-                Uri uri = new Uri(url[a]);
+                Uri uri = new Uri("https://download3.operacdn.com/pub/" + tFileName[a] + "/" + buildVersion[a] + "/win/" + sFileName[a] + "_" + buildVersion[a] + "_Setup.exe");
                 var fName = fileName[a];
                 using (myWebClient = new WebClient())
                 {
@@ -267,7 +257,7 @@ namespace Portable_Opera_Updater
             else if (!checkBox3.Checked)
             {
                 WebClient myWebClient = new WebClient();
-                Uri uri = new Uri(url[a]);
+                Uri uri = new Uri("https://download3.operacdn.com/pub/" + tFileName[a] + "/" + buildVersion[a] + "/win/" + sFileName[a] + "_" + buildVersion[a] + "_Setup.exe");
                 var fName = fileName[a];
                 using (myWebClient = new WebClient())
                 {
