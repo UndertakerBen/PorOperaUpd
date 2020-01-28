@@ -34,7 +34,7 @@ namespace Portable_Opera_Updater
                 string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
                 string[] resid = sresUrl.Split(new char[] { '=', '&' });
                 myWebResponse.Close();
-                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes&amp;sub=marine&amp;utm_tryagain=yes");
+                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;nothanks=yes");
                 WebResponse myWebResponse2 = myWebRequest2.GetResponse();
                 string resUrl2 = myWebResponse2.ResponseUri.ToString();
                 string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
