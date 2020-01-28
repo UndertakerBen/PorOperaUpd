@@ -78,18 +78,20 @@ namespace Portable_Opera_Updater
                 if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")) || (File.Exists(instDir[4] + "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
                 {
                     checkBox3.Checked = true;
+                    button9.BackColor = Color.FromArgb(244, 244, 244);
                     CheckButton();
                 }
-                if (!checkBox3.Checked)
+                else if (!checkBox3.Checked)
                 {
                     checkBox1.Enabled = false;
                     checkBox2.Enabled = false;
                     button9.Enabled = false;
-                    button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
-                }
-                else if (File.Exists(@"Opera\launcher.exe"))
-                {
-                    CheckButtonSingle();
+                    button9.BackColor = Color.FromArgb(244, 244, 244);
+
+                    if (File.Exists(@"Opera\launcher.exe"))
+                    {
+                        CheckButtonSingle();
+                    }
                 }
             }
             else if (IntPtr.Size != 8)
@@ -100,15 +102,15 @@ namespace Portable_Opera_Updater
                     checkBox1.Enabled = false;
                     CheckButton();
                 }
-                if (!checkBox3.Checked)
+                else if (!checkBox3.Checked)
                 {
                     checkBox1.Enabled = false;
                     button9.Enabled = false;
-                    button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
-                }
-                else if (File.Exists(@"Opera\launcher.exe"))
-                {
-                    CheckButtonSingle();
+                    button9.BackColor = Color.FromArgb(244, 244, 244);
+                    if (File.Exists(@"Opera\launcher.exe"))
+                    {
+                        CheckButtonSingle();
+                    }
                 }
             }
         }
@@ -251,6 +253,8 @@ namespace Portable_Opera_Updater
             {
                 WebClient myWebClient = new WebClient();
                 Uri uri = new Uri(url[a]);
+                ServicePoint sp = ServicePointManager.FindServicePoint(uri);
+                sp.ConnectionLimit = 1;
                 var fName = fileName[a];
                 using (myWebClient = new WebClient())
                 {
@@ -270,6 +274,8 @@ namespace Portable_Opera_Updater
             {
                 WebClient myWebClient = new WebClient();
                 Uri uri = new Uri(url[a]);
+                ServicePoint sp = ServicePointManager.FindServicePoint(uri);
+                sp.ConnectionLimit = 1;
                 var fName = fileName[a];
                 using (myWebClient = new WebClient())
                 {
@@ -490,7 +496,7 @@ namespace Portable_Opera_Updater
                             button9.Text = "Alle Updaten";
                         }
                         button9.Enabled = true;
-                        button9.BackColor = Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                        button9.BackColor = Color.FromArgb(224, 224, 224);
                         if (buttons.Length > 0)
                         {
                             var button = (Button)buttons[0];
@@ -536,7 +542,7 @@ namespace Portable_Opera_Updater
                 if (buttons.Length > 0)
                 {
                     var button = (Button)buttons[0];
-                    button.BackColor = Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224))))); ;
+                    button.BackColor = Color.FromArgb(224, 224, 224); ;
                 }
             }
         }
@@ -675,7 +681,7 @@ namespace Portable_Opera_Updater
                 }
                 if (button9.Enabled)
                 {
-                    button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                    button9.BackColor = Color.FromArgb(224, 224, 224);
                 }
                 CheckButton();
             }
@@ -684,7 +690,7 @@ namespace Portable_Opera_Updater
                 checkBox1.Enabled = false;
                 checkBox2.Enabled = false;
                 button9.Enabled = false;
-                button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+                button9.BackColor = Color.FromArgb(244, 244, 244);
                 CheckButtonSingle();
             }
         }
@@ -694,12 +700,12 @@ namespace Portable_Opera_Updater
             if (checkBox1.Checked)
             {
                 button9.Enabled = true;
-                button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                button9.BackColor = Color.FromArgb(224, 224, 224);
             }
             else if ((!checkBox1.Checked) && (!checkBox2.Checked))
             {
                 button9.Enabled = false;
-                button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+                button9.BackColor = Color.FromArgb(244, 244, 244);
             }
         }
         private void CheckBox2_CheckedChanged(object sender, EventArgs e)
@@ -707,12 +713,12 @@ namespace Portable_Opera_Updater
             if (checkBox2.Checked)
             {
                 button9.Enabled = true;
-                button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+                button9.BackColor = Color.FromArgb(224, 224, 224);
             }
             else if ((!checkBox1.Checked) && (!checkBox2.Checked))
             {
                 button9.Enabled = false;
-                button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+                button9.BackColor = Color.FromArgb(244, 244, 244);
             }
         }
         private void Button10_Click(object sender, EventArgs e)
