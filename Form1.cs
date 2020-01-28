@@ -34,7 +34,7 @@ namespace Portable_Opera_Updater
                 string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
                 string[] resid = sresUrl.Split(new char[] { '=', '&' });
                 myWebResponse.Close();
-                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;nothanks=yes");
+                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
                 WebResponse myWebResponse2 = myWebRequest2.GetResponse();
                 string resUrl2 = myWebResponse2.ResponseUri.ToString();
                 string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
@@ -343,6 +343,7 @@ namespace Portable_Opera_Updater
             string i = e.UserState.ToString();
             string[] i2 = i.Split(new char[] { '|' });
             var labels = Controls.Find("label" + i2[1], true);
+            Label label = (Label)labels[0];
             if (e.Cancelled == true)
             {
                 MessageBox.Show("Download has been canceled.");
@@ -351,16 +352,7 @@ namespace Portable_Opera_Updater
             {
                 if (labels.Length > 0)
                 {
-                    var label = (Label)labels[0];
-                    if (culture1.Name != "de-DE")
-                    {
-                        label.Text = "Unpacking";
-                    }
-                    else
-                    {
-                        label.Text = "Entpacken";
-                    }
-                    label.Text = "Entpacken";
+                    label.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
                     string arguments = " x " + "\"" + @i2[3] + "\"" + " -o" + "\"" + @"Update\" + i2[4] + "\"" + " -y";
                     Process process = new Process();
                     process.StartInfo.FileName = @"Bin\7zr.exe";
@@ -422,14 +414,7 @@ namespace Portable_Opera_Updater
                     {
                         CheckButtonSingle();
                     }
-                    if (culture1.Name != "de-DE")
-                    {
-                        label.Text = "Unpacked";
-                    }
-                    else
-                    {
-                        label.Text = "Entpackt";
-                    }
+                    label.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
                 }
             }
         }
