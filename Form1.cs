@@ -61,7 +61,7 @@ namespace Portable_Opera_Updater
             {
                 button5.Visible = false;
                 button6.Visible = false;
-                button8.Visible = false;
+                button7.Visible = false;
                 button8.Visible = false;
                 checkBox2.Visible = false;
             }
