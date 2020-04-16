@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Diagnostics;
-using System.Windows.Forms;
+using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Windows.Forms;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Portable_Opera_Updater
 {
@@ -32,7 +34,7 @@ namespace Portable_Opera_Updater
                 WebResponse myWebResponse = myWebRequest.GetResponse();
                 string resUrl = myWebResponse.ResponseUri.ToString();
                 string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
-                string[] resid = sresUrl.Split(new char[] { '=', '&' });
+                string[] resid = sresUrl.Split(new char[] { '=', '&', '%' });
                 myWebResponse.Close();
                 WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
                 WebResponse myWebResponse2 = myWebRequest2.GetResponse();
@@ -113,27 +115,28 @@ namespace Portable_Opera_Updater
                     }
                 }
             }
+            CheckUpdate();
         }
         private void Button1_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[0], 0, 0, 1, 10, 11);
+                NewMethod4(0, 0, 1, 0);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[0], 0, 0, 1, 10, 11);
+                NewMethod5(0, 0, 1, 8);
             }
         }
         private void Button2_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[1], 1, 0, 2, 13, 12);
+                NewMethod4(1, 0, 2, 1);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[1], 1, 0, 1, 10, 11);
+                NewMethod5(1, 0, 2, 8);
             }
         }
 
@@ -141,156 +144,249 @@ namespace Portable_Opera_Updater
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[2], 2, 0, 3, 15, 14);
+                NewMethod4(2, 0, 3, 2);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[2], 2, 0, 1, 10, 11);
+                NewMethod5(2, 0, 3, 8);
             }
         }
         private void Button4_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[3], 3, 0, 4, 17, 16);
+                NewMethod4(3, 0, 4, 3);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[3], 3, 0, 1, 10, 11);
+                NewMethod5(3, 0, 4, 8);
             }
         }
         private void Button5_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[4], 4, 1, 5, 19, 18);
+                NewMethod4(4, 1, 5, 4);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[4], 4, 1, 1, 10, 11);
+                NewMethod5(4, 1, 5, 8);
             }
         }
         private void Button6_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[5], 5, 1, 6, 21, 20);
+                NewMethod4(5, 1, 6, 5);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[5], 5, 1, 1, 10, 11);
+                NewMethod5(5, 1, 6, 8);
             }
         }
         private void Button7_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[6], 6, 1, 7, 23, 22);
+                NewMethod4(6, 1, 7, 6);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[6], 6, 1, 1, 10, 11);
+                NewMethod5(6, 1, 7, 8);
             }
         }
         private void Button8_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod4(instDir[7], 7, 1, 8, 25, 24);
+                NewMethod4(7, 1, 8, 7);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(ring[7], 7, 1, 1, 10, 11);
+                NewMethod5(7, 1, 8, 8);
             }
         }
-        private void Button9_Click(object sender, EventArgs e)
+        private async void Button9_Click(object sender, EventArgs e)
+        {
+            await Testing();
+        }
+        private async Task Testing()
         {
             if ((!Directory.Exists(instDir[0])) && (!Directory.Exists(instDir[1])) && (!Directory.Exists(instDir[2])) && (!Directory.Exists(instDir[3])) && checkBox1.Checked)
             {
-                DownloadFile(0, 0, 1, 10, 11);
-                DownloadFile(1, 0, 2, 13, 12);
-                DownloadFile(2, 0, 3, 15, 14);
-                DownloadFile(3, 0, 4, 17, 16);
+                await DownloadFile(0, 0, 1, 0);
+                await DownloadFile(1, 0, 2, 1);
+                await DownloadFile(2, 0, 3, 2);
+                await DownloadFile(3, 0, 4, 3);
                 checkBox1.Enabled = false;
                 checkBox1.Checked = false;
             }
-            NewMethod8(0, 0, 1, 10, 11);
-            NewMethod8(1, 0, 2, 13, 12);
-            NewMethod8(2, 0, 3, 15, 14);
-            NewMethod8(3, 0, 4, 17, 16);
+            await NewMethod7(0, 0, 1, 0);
+            await NewMethod7(1, 0, 2, 1);
+            await NewMethod7(2, 0, 3, 2);
+            await NewMethod7(3, 0, 4, 3);
             if (IntPtr.Size == 8)
             {
                 if ((!Directory.Exists(instDir[4])) && (!Directory.Exists(instDir[5])) && (!Directory.Exists(instDir[6])) && (!Directory.Exists(instDir[7])) && checkBox2.Checked)
                 {
-                    DownloadFile(4, 1, 5, 19, 18);
-                    DownloadFile(5, 1, 6, 21, 20);
-                    DownloadFile(6, 1, 7, 23, 22);
-                    DownloadFile(7, 1, 8, 25, 24);
+                    await DownloadFile(4, 1, 5, 4);
+                    await DownloadFile(5, 1, 6, 5);
+                    await DownloadFile(6, 1, 7, 6);
+                    await DownloadFile(7, 1, 8, 7);
                     checkBox2.Enabled = false;
                     checkBox2.Checked = false;
                 }
-                NewMethod8(4, 1, 5, 19, 18);
-                NewMethod8(5, 1, 6, 21, 20);
-                NewMethod8(6, 1, 7, 23, 22);
-                NewMethod8(7, 1, 8, 25, 24);
+                await NewMethod7(4, 1, 5, 4);
+                await NewMethod7(5, 1, 6, 5);
+                await NewMethod7(6, 1, 7, 6);
+                await NewMethod7(7, 1, 8, 7);
             }
         }
-        private void NewMethod8(int a, int b, int c , int d, int e)
+        private async Task DownloadFile(int a, int b, int c, int d)
         {
-            if (Directory.Exists(instDir[a]) && File.Exists(instDir[a] + "\\updates\\Version.log"))
+            GroupBox progressBox = new GroupBox
             {
-                string instTVersion = File.ReadAllText(instDir[a] + "\\updates\\Version.log");
-                string[] instVersion = NewMethod(instTVersion);
-                if (instVersion[0] != buildVersion[a])
-                {
-                    DownloadFile(a, b, c, d, e);
-                }
-            }
-        }
-        private void DownloadFile(int a, int b, int c, int d, int e)
-        {
-            if (checkBox3.Checked)
+                Location = new Point(10, button10.Location.Y + button10.Height + 5),
+                Size = new Size(groupBox3.Width, 90),
+                BackColor = Color.Lavender,
+            };
+            Label title = new Label
             {
+                AutoSize = false,
+                Location = new Point(2, 10),
+                Size = new Size(progressBox.Width - 4, 25),
+                Text = "Opera " + ring[a] + " " + buildVersion[a] + " " + arch[b],
+                TextAlign = ContentAlignment.BottomCenter
+            };
+            title.Font = new Font(title.Font.Name, 9.25F, FontStyle.Bold);
+            Label downloadLabel = new Label
+            {
+                AutoSize = false,
+                Location = new Point(5, 35),
+                Size = new Size(200, 25),
+                TextAlign = ContentAlignment.BottomLeft
+            };
+            Label percLabel = new Label
+            {
+                AutoSize = false,
+                Location = new Point(progressBox.Size.Width - 105, 35),
+                Size = new Size(100, 25),
+                TextAlign = ContentAlignment.BottomRight
+            };
+            ProgressBar progressBarneu = new ProgressBar
+            {
+                Location = new Point(5, 65),
+                Size = new Size(progressBox.Size.Width - 10, 7)
+            };
+            progressBox.Controls.Add(title);
+            progressBox.Controls.Add(downloadLabel);
+            progressBox.Controls.Add(percLabel);
+            progressBox.Controls.Add(progressBarneu);
+            Controls.Add(progressBox);
+            List<Task> list = new List<Task>();
+
+            //if (checkBox3.Checked)
+            //{
                 WebClient myWebClient = new WebClient();
                 Uri uri = new Uri(url[a]);
                 ServicePoint sp = ServicePointManager.FindServicePoint(uri);
                 sp.ConnectionLimit = 1;
-                var fName = fileName[a];
                 using (myWebClient = new WebClient())
                 {
-                    myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                    myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+                    myWebClient.DownloadProgressChanged += (o, args) =>
+                    {
+                        Control[] buttons = Controls.Find("button" + c, true);
+                        if (buttons.Length > 0)
+                        {
+                            Button button = (Button)buttons[0];
+                            button.BackColor = Color.Orange;
+                        }
+                        progressBarneu.Value = args.ProgressPercentage;
+                        downloadLabel.Text = string.Format("{0} MB's / {1} MB's",
+                            (args.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                            (args.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
+                        percLabel.Text = args.ProgressPercentage.ToString() + "%";
+                    };
+                    myWebClient.DownloadFileCompleted += (o, args) =>
+                    {
+                        if (args.Cancelled == true)
+                        {
+                            MessageBox.Show("Download has been canceled.");
+                        }
+                        else
+                        {
+                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
+                            string arguments = " x " + "\"" + "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe" + "\"" + " -o" + "\"" + @"Update\" + instDir[d] + "\"" + " -y";
+                            Process process = new Process();
+                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                            process.StartInfo.Arguments = arguments;
+                            process.Start();
+                            process.WaitForExit();
+                            if ((File.Exists(@"Update\" + instDir[d] + "\\launcher.exe")) && (File.Exists(instDir[d] + "\\updates\\Version.log")))
+                            {
+                                string instTVersion = File.ReadAllText(instDir[d] + "\\updates\\Version.log");
+                                string[] instVersion = NewMethod(instTVersion);
+                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + instDir[d] + "\\launcher.exe");
+                                if (checkBox3.Checked)
+                                {
+                                    if (testm.FileVersion != instVersion[0])
+                                    {
+                                        NewMethod2(a, b, d, instVersion, testm);
+                                    }
+                                    else if ((testm.FileVersion == instVersion[0]) && (checkBox4.Checked))
+                                    {
+                                        NewMethod2(a, b, d, instVersion, testm);
+                                    }
+                                }
+                                else if (!checkBox3.Checked)
+                                {
+                                    NewMethod2(a, b, d, instVersion, testm);
+                                }
+                            }
+                            else
+                            {
+                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + instDir[d] + "\\launcher.exe");
+                                NewMethod6(a, b, d, testm);
+                            }
+                            if (checkBox5.Checked)
+                            {
+                                if (!File.Exists(deskDir + "\\" + instDir[d] + ".lnk"))
+                                {
+                                    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+                                    IWshRuntimeLibrary.IWshShortcut link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(deskDir + "\\" + instDir[d] + ".lnk");
+                                    link.IconLocation = applicationPath + "\\" + instDir[d] + "\\launcher.exe,0";
+                                    link.WorkingDirectory = applicationPath;
+                                    link.TargetPath = applicationPath + "\\" + instDir[d] + " Launcher.exe";
+                                    link.Save();
+                                }
+                            }
+                            if (!File.Exists(applicationPath + "\\" + instDir[d] + " Launcher.exe"))
+                            {
+                                File.Copy(@"Bin\Launcher\" + instDir[d] + " Launcher.exe", applicationPath + "\\" + instDir[d] + " Launcher.exe");
+                            }
+                            if (File.Exists(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe"))
+                            {
+                                File.Delete(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
+                            }
+                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
+                        }
+                    };
                     try
                     {
-                        myWebClient.DownloadFileAsync(uri, fName, c + "|" + d + "|" + e + "|" + fName + "|" + instDir[a] + "|" + arch[b] + "|" + ring[a]);
+                        var task = myWebClient.DownloadFileTaskAsync(uri, "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
+                        list.Add(task);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
+
                 }
-            }
-            else if (!checkBox3.Checked)
-            {
-                WebClient myWebClient = new WebClient();
-                Uri uri = new Uri(url[a]);
-                ServicePoint sp = ServicePointManager.FindServicePoint(uri);
-                sp.ConnectionLimit = 1;
-                var fName = fileName[a];
-                using (myWebClient = new WebClient())
-                {
-                    myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                    myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-                    try
-                    {
-                        myWebClient.DownloadFileAsync(uri, fName, c + "|" + d + "|" + e + "|" + fName + "|" + instDir[8] + "|" + arch[b] + "|" + ring[a]);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            }
+            await Task.WhenAll(list);
+            await Task.Delay(2000);
+            Controls.Remove(progressBox);
+            //}
         }
         private void Message()
         {
@@ -304,153 +400,6 @@ namespace Portable_Opera_Updater
                 MessageBox.Show("Die selbe Version ist bereits installiert", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-        }
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            string i = e.UserState.ToString();
-            string[] i2 = i.Split(new char[] { '|' });
-            var progressBars = Controls.Find("progressBar" + i2[0], true);
-            if (checkBox3.Checked)
-            {
-                var buttons = Controls.Find("button" + i2[0], true);
-                NewMethod6(buttons);
-            }
-            var label1 = Controls.Find("label" + i2[1], true);
-            var label2 = Controls.Find("label" + i2[2], true);
-            if (progressBars.Length > 0)
-            {
-                var progressBar = (ProgressBar)progressBars[0];
-                progressBar.Visible = true;
-                progressBar.Value = e.ProgressPercentage;
-            }
-            if (label1.Length > 0)
-            {
-                var label = (Label)label1[0];
-                label.Visible = true;
-                label.Text = string.Format("{0} MB's / {1} MB's",
-                (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
-                (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
-            }
-            if (label2.Length > 0)
-            {
-                var label3 = (Label)label2[0];
-                label3.Visible = true;
-                label3.Text = e.ProgressPercentage.ToString() + "%";
-            }
-        }
-        private void Completed(object sender, AsyncCompletedEventArgs e)
-        {
-            string i = e.UserState.ToString();
-            string[] i2 = i.Split(new char[] { '|' });
-            var labels = Controls.Find("label" + i2[1], true);
-            Label label = (Label)labels[0];
-            if (e.Cancelled == true)
-            {
-                MessageBox.Show("Download has been canceled.");
-            }
-            else
-            {
-                if (labels.Length > 0)
-                {
-                    label.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
-                    string arguments = " x " + "\"" + @i2[3] + "\"" + " -o" + "\"" + @"Update\" + i2[4] + "\"" + " -y";
-                    Process process = new Process();
-                    process.StartInfo.FileName = @"Bin\7zr.exe";
-                    process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                    process.StartInfo.Arguments = arguments;
-                    process.Start();
-                    process.WaitForExit();
-                    if ((File.Exists(@"Update\" + i2[4] + "\\launcher.exe")) && (File.Exists(@i2[4] + "\\updates\\Version.log")))
-                    {
-                        string instTVersion = File.ReadAllText(i2[4] + "\\updates\\Version.log");
-                        string[] instVersion = NewMethod(instTVersion);
-                        FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + i2[4] + "\\launcher.exe");
-                        if (checkBox3.Checked)
-                        {
-                            if (testm.FileVersion != instVersion[0])
-                            {
-                                NewMethod2(i2, instVersion, testm);
-                            }
-                            else if ((testm.FileVersion == instVersion[0]) && (checkBox4.Checked))
-                            {
-                                NewMethod2(i2, instVersion, testm);
-                            }
-                        }
-                        else if (!checkBox3.Checked)
-                        {
-                            NewMethod2(i2, instVersion, testm);
-                        }
-                    }
-                    else
-                    {
-                        FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + i2[4] + "\\launcher.exe");
-                        NewMethod7(i2, testm);
-                    }
-                    if (checkBox5.Checked)
-                    {
-                        if (!File.Exists(deskDir + "\\" + i2[4] + ".lnk"))
-                        {
-                            IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-                            IWshRuntimeLibrary.IWshShortcut link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(deskDir + "\\" + i2[4] + ".lnk");
-                            link.IconLocation = applicationPath + "\\" + i2[4] + "\\launcher.exe,0";
-                            link.WorkingDirectory = applicationPath;
-                            link.TargetPath = applicationPath + "\\" + i2[4] + " Launcher.exe";
-                            link.Save();
-                        }
-                    }
-                    if (!File.Exists(applicationPath + "\\" + i2[4] + " Launcher.exe"))
-                    {
-                        File.Copy(@"Bin\Launcher\" + i2[4] + " Launcher.exe", applicationPath + "\\" + i2[4] + " Launcher.exe");
-                    }
-                    if (File.Exists(path: @i2[3]))
-                    {
-                        File.Delete(path: @i2[3]);
-                    }
-                    if (checkBox3.Checked)
-                    {
-                        CheckButton();
-                    }
-                    else if (!checkBox3.Checked)
-                    {
-                        CheckButtonSingle();
-                    }
-                    label.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
-                }
-            }
-        }
-        private static void NewMethod2(string[] i2, string[] instVersion, FileVersionInfo testm)
-        {
-            if (Directory.Exists(@i2[4] + "\\Assets"))
-            {
-                Directory.Delete(@i2[4] + "\\Assets", true);
-            }
-            if (Directory.Exists(i2[4] + "\\" + instVersion[0]))
-            {
-                Directory.Delete(i2[4] + "\\" + instVersion[0], true);
-            }
-            Thread.Sleep(500);
-            NewMethod7(i2, testm);
-        }
-        private static void NewMethod7(string[] i2, FileVersionInfo testm)
-        {
-            if (!Directory.Exists(i2[4]))
-            {
-                Directory.CreateDirectory(i2[4]);
-            }
-            if (!Directory.Exists(i2[4] + "\\updates"))
-            {
-                Directory.CreateDirectory(i2[4] + "\\updates");
-            }
-            Thread.Sleep(500);
-            File.Copy(@"Update\" + i2[4] + "\\launcher.exe", @i2[4] + "\\launcher.exe", true);
-            File.Copy(@"Update\" + i2[4] + "\\launcher.visualelementsmanifest.xml", @i2[4] + "\\launcher.visualelementsmanifest.xml", true);
-            File.Copy(@"Update\" + i2[4] + "\\Resources.pri", @i2[4] + "\\Resources.pri", true);
-            File.Delete(@"Update\" + i2[4] + "\\launcher.exe");
-            File.Delete(@"Update\" + i2[4] + "\\launcher.visualelementsmanifest.xml");
-            File.Delete(@"Update\" + i2[4] + "\\Resources.pri");
-            Directory.Move(@"Update\" + i2[4] + "\\Assets", @i2[4] + "\\Assets");
-            Directory.Move(@"Update\" + i2[4], @i2[4] + "\\" + testm.FileVersion);
-            File.WriteAllText(i2[4] + "\\updates\\Version.log", testm.FileVersion + "|" + i2[6] + "|" + i2[5]);
         }
         private void CheckButton()
         {
@@ -491,7 +440,7 @@ namespace Portable_Opera_Updater
                 }
             }
         }
-        private void CheckButtonSingle()
+        public void CheckButtonSingle()
         {
             NewMethod1();
             if (File.Exists(@"Opera\updates\Version.log"))
@@ -502,22 +451,126 @@ namespace Portable_Opera_Updater
                 {
                     case "Opera GX":
                         NewMethod3(instVersion, 1, 5, 0);
-
                         break;
                     case "Developer":
                         NewMethod3(instVersion, 2, 6, 1);
-
                         break;
                     case "Beta":
                         NewMethod3(instVersion, 3, 7, 2);
-
                         break;
                     case "Stable":
                         NewMethod3(instVersion, 4, 8, 3);
-
                         break;
                 }
             }
+        }
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                button9.Enabled = true;
+                button9.BackColor = Color.FromArgb(224, 224, 224);
+            }
+            else if ((!checkBox1.Checked) && (!checkBox2.Checked))
+            {
+                button9.Enabled = false;
+                button9.BackColor = Color.FromArgb(244, 244, 244);
+            }
+        }
+        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+                button9.Enabled = true;
+                button9.BackColor = Color.FromArgb(224, 224, 224);
+            }
+            else if ((!checkBox1.Checked) && (!checkBox2.Checked))
+            {
+                button9.Enabled = false;
+                button9.BackColor = Color.FromArgb(244, 244, 244);
+            }
+        }
+        private void CheckBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox3.Checked)
+            {
+                if ((File.Exists(instDir[4] + "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
+                {
+                    checkBox2.Enabled = false;
+                }
+                else
+                {
+                    checkBox2.Enabled = true;
+                }
+                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")))
+                {
+                    checkBox1.Enabled = false;
+                }
+                else
+                {
+                    checkBox1.Enabled = true;
+                }
+                if (button9.Enabled)
+                {
+                    button9.BackColor = Color.FromArgb(224, 224, 224);
+                }
+                CheckButton();
+            }
+            if (!checkBox3.Checked)
+            {
+                checkBox1.Enabled = false;
+                checkBox2.Enabled = false;
+                button9.Enabled = false;
+                button9.BackColor = Color.FromArgb(244, 244, 244);
+                CheckButtonSingle();
+            }
+        }
+        private void Button10_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (Directory.Exists(@"Update"))
+            {
+                Directory.Delete(@"Update", true);
+            }
+        }
+        private void Button1_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(0, "x86");
+        }
+        private void Button2_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(1, "x86");
+        }
+        private void Button3_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(2, "x86");
+        }
+        private void Button4_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(3, "x86");
+        }
+        private void Button5_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(4, "x64");
+        }
+        private void Button6_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(5, "x64");
+        }
+        private void Button7_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(6, "x64");
+        }
+        private void Button8_MouseHover(object sender, EventArgs e)
+        {
+            NewMethod8(7, "x64");
+        }
+        private static string[] NewMethod(string instTVersion)
+        {
+            return instTVersion.Split(new char[] { '|' });
         }
         private void NewMethod1()
         {
@@ -530,6 +583,19 @@ namespace Portable_Opera_Updater
                     button.BackColor = Color.FromArgb(224, 224, 224); ;
                 }
             }
+        }
+        private void NewMethod2(int a, int b, int d, string[] instVersion, FileVersionInfo testm)
+        {
+            if (Directory.Exists(instDir[d] + "\\Assets"))
+            {
+                Directory.Delete(instDir[d] + "\\Assets", true);
+            }
+            if (Directory.Exists(instDir[d] + "\\" + instVersion[0]))
+            {
+                Directory.Delete(instDir[d] + "\\" + instVersion[0], true);
+            }
+            Thread.Sleep(500);
+            NewMethod6(a, b, d, testm);
         }
         private void NewMethod3(string[] instVersion, int a, int b, int c)
         {
@@ -574,21 +640,17 @@ namespace Portable_Opera_Updater
                 }
             }
         }
-        private static string[] NewMethod(string instTVersion)
-        {
-            return instTVersion.Split(new char[] { '|' });
-        }
-        private void NewMethod4(string instDir, int a, int b, int c, int d, int e)
+        private async void NewMethod4(int a, int b, int c, int d)
         {
             if (File.Exists(@instDir + "\\updates\\Version.log"))
             {
-                string instTVersion = File.ReadAllText(@instDir + "\\updates\\Version.log");
+                string instTVersion = File.ReadAllText(@instDir[a] + "\\updates\\Version.log");
                 string[] instVersion = NewMethod(instTVersion);
                 if (instVersion[0] == buildVersion[b])
                 {
                     if (checkBox4.Checked)
                     {
-                        DownloadFile(a, b, c, d, e);
+                        await DownloadFile(a, b, c, d);
                     }
                     else
                     {
@@ -597,27 +659,26 @@ namespace Portable_Opera_Updater
                 }
                 else
                 {
-                    DownloadFile(a, b, c, d, e);
+                    await DownloadFile(a, b, c, d);
                 }
             }
             else
             {
-                DownloadFile(a, b, c, d, e);
+                await DownloadFile(a, b, c, d);
             }
         }
-        private void NewMethod5(string ring, int a, int b, int c, int d, int e)
+        private async void NewMethod5(int a, int b, int c, int d)
         {
             var buttons = Controls.Find("button" + (a + 1), true);
             if (File.Exists(@"Opera\updates\Version.log"))
             {
                 string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
                 string[] instVersion = NewMethod(instTVersion);
-                if ((instVersion[0] == buildVersion[a]) && (instVersion[1] == ring) && (instVersion[2] == arch[b]))
+                if ((instVersion[0] == buildVersion[a]) && (instVersion[1] == ring[a]) && (instVersion[2] == arch[b]))
                 {
                     if (checkBox4.Checked)
                     {
-                        DownloadFile(a, b, c, d, e);
-                        NewMethod6(buttons);
+                        await DownloadFile(a, b, c, d);
                     }
                     else
                     {
@@ -626,130 +687,56 @@ namespace Portable_Opera_Updater
                 }
                 else
                 {
-                    DownloadFile(a, b, c, d, e);
-                    NewMethod6(buttons);
+                    await DownloadFile(a, b, c, d);
                 }
             }
             else
             {
-                DownloadFile(a, b, c, d, e);
-                NewMethod6(buttons);
+                await DownloadFile(a, b, c, d);
             }
         }
-        private static void NewMethod6(Control[] buttons)
+        private void NewMethod6(int a, int b, int d, FileVersionInfo testm)
         {
-            if (buttons.Length > 0)
+            if (!Directory.Exists(instDir[d]))
             {
-                var button = (Button)buttons[0];
-                button.BackColor = Color.Orange;
+                Directory.CreateDirectory(instDir[d]);
             }
-        }
-        private void CheckBox3_CheckedChanged(object sender, EventArgs e)
-        {
+            if (!Directory.Exists(instDir[d] + "\\updates"))
+            {
+                Directory.CreateDirectory(instDir[d] + "\\updates");
+            }
+            Thread.Sleep(500);
+            File.Copy(@"Update\" + instDir[d] + "\\launcher.exe", instDir[d] + "\\launcher.exe", true);
+            File.Copy(@"Update\" + instDir[d] + "\\launcher.visualelementsmanifest.xml", instDir[d] + "\\launcher.visualelementsmanifest.xml", true);
+            File.Copy(@"Update\" + instDir[d] + "\\Resources.pri", instDir[d] + "\\Resources.pri", true);
+            File.Delete(@"Update\" + instDir[d] + "\\launcher.exe");
+            File.Delete(@"Update\" + instDir[d] + "\\launcher.visualelementsmanifest.xml");
+            File.Delete(@"Update\" + instDir[d] + "\\Resources.pri");
+            Directory.Move(@"Update\" + instDir[d] + "\\Assets", instDir[d] + "\\Assets");
+            Directory.Move(@"Update\" + instDir[d], instDir[d] + "\\" + testm.FileVersion);
+            File.WriteAllText(instDir[d] + "\\updates\\Version.log", testm.FileVersion + "|" + ring[a] + "|" + arch[b]);
             if (checkBox3.Checked)
             {
-                if ((File.Exists(instDir[4] + "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
-                {
-                    checkBox2.Enabled = false;
-                }
-                else
-                {
-                    checkBox2.Enabled = true;
-                }
-                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")))
-                {
-                    checkBox1.Enabled = false;
-                }
-                else
-                {
-                    checkBox1.Enabled = true;
-                }
-                if (button9.Enabled)
-                {
-                    button9.BackColor = Color.FromArgb(224, 224, 224);
-                }
                 CheckButton();
             }
-            if (!checkBox3.Checked)
+            else if (!checkBox3.Checked)
             {
-                checkBox1.Enabled = false;
-                checkBox2.Enabled = false;
-                button9.Enabled = false;
-                button9.BackColor = Color.FromArgb(244, 244, 244);
                 CheckButtonSingle();
             }
         }
-
-        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        private async Task NewMethod7(int a, int b, int c, int d)
         {
-            if (checkBox1.Checked)
+            if (Directory.Exists(instDir[a]) && File.Exists(instDir[a] + "\\updates\\Version.log"))
             {
-                button9.Enabled = true;
-                button9.BackColor = Color.FromArgb(224, 224, 224);
-            }
-            else if ((!checkBox1.Checked) && (!checkBox2.Checked))
-            {
-                button9.Enabled = false;
-                button9.BackColor = Color.FromArgb(244, 244, 244);
+                string instTVersion = File.ReadAllText(instDir[a] + "\\updates\\Version.log");
+                string[] instVersion = NewMethod(instTVersion);
+                if (instVersion[0] != buildVersion[a])
+                {
+                    await DownloadFile(a, b, c, d);
+                }
             }
         }
-        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox2.Checked)
-            {
-                button9.Enabled = true;
-                button9.BackColor = Color.FromArgb(224, 224, 224);
-            }
-            else if ((!checkBox1.Checked) && (!checkBox2.Checked))
-            {
-                button9.Enabled = false;
-                button9.BackColor = Color.FromArgb(244, 244, 244);
-            }
-        }
-        private void Button10_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (Directory.Exists(@"Update"))
-            {
-                Directory.Delete(@"Update", true);
-            }
-        }
-        private void Button1_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(0, "x86");
-        }
-        private void Button2_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(1, "x86");
-        }
-        private void Button3_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(2, "x86");
-        }
-        private void Button4_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(3, "x86");
-        }
-        private void Button5_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(4, "x64");
-        }
-        private void Button6_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(5, "x64");
-        }
-        private void Button7_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(6, "x64");
-        }
-        private void Button8_MouseHover(object sender, EventArgs e)
-        {
-            NewMethod9(7, "x64");
-        }
-        private void NewMethod9(int a, string arch)
+        private void NewMethod8(int a, string arch)
         {
             var buttons = Controls.Find("button" + (a + 1), true);
             var button = (Button)buttons[0];
@@ -759,7 +746,7 @@ namespace Portable_Opera_Updater
                 {
                     string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
                     string[] instVersion = NewMethod(instTVersion);
-                    NewMethod10(a, arch, button, instVersion);
+                    NewMethod9(a, arch, button, instVersion);
                 }
             }
             if (checkBox3.Checked)
@@ -768,11 +755,11 @@ namespace Portable_Opera_Updater
                 {
                     string instTVersion = File.ReadAllText(instDir[a] + "\\updates\\Version.log");
                     string[] instVersion = NewMethod(instTVersion);
-                    NewMethod10(a, arch, button, instVersion);
+                    NewMethod9(a, arch, button, instVersion);
                 }
             }
         }
-        private void NewMethod10(int a, string arch, Button button, string[] instVersion)
+        private void NewMethod9(int a, string arch, Button button, string[] instVersion)
         {
             if ((instVersion[1] == ring[a]) && (instVersion[2] == arch))
             {
@@ -781,6 +768,129 @@ namespace Portable_Opera_Updater
             else
             {
                 toolTip.SetToolTip(button, String.Empty);
+            }
+        }
+        private void CheckUpdate()
+        {
+            GroupBox groupBoxupdate = new GroupBox
+            {
+                Location = new Point(groupBox3.Location.X, button10.Location.Y + button10.Size.Height + 5),
+                Size = new Size(groupBox3.Width, 90),
+                BackColor = Color.Aqua
+            };
+            Label versionLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(2, 30),
+                Size = new Size(groupBoxupdate.Width - 4, 25),
+            };
+            versionLabel.Font = new Font(versionLabel.Font.Name, 10F, FontStyle.Bold);
+            Label infoLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(2, 10),
+                Size = new Size(groupBoxupdate.Width - 4, 20),
+                Text = "Eine neue Version ist verfügbar"
+            };
+            infoLabel.Font = new Font(infoLabel.Font.Name, 8.75F);
+            Label downLabel = new Label
+            {
+                TextAlign = ContentAlignment.MiddleRight,
+                AutoSize = false,
+                Size = new Size(100, 23),
+                Text = "Jetzt Updaten"
+            };
+            Button laterButton = new Button
+            {
+                Text = "Nein",
+                Size = new Size(40, 23),
+                BackColor = Color.FromArgb(224, 224, 224)
+            };
+            Button updateButton = new Button
+            {
+                Location = new Point(groupBoxupdate.Width - Width - 10, 60),
+                Text = "Ja",
+                Size = new Size(40, 23),
+                BackColor = Color.FromArgb(224, 224, 224)
+            };
+            updateButton.Location = new Point(groupBoxupdate.Width - updateButton.Width - 10, 60);
+            laterButton.Location = new Point(updateButton.Location.X - laterButton.Width - 5, 60);
+            downLabel.Location = new Point(laterButton.Location.X - downLabel.Width - 20, 60);
+            groupBoxupdate.Controls.Add(updateButton);
+            groupBoxupdate.Controls.Add(laterButton);
+            groupBoxupdate.Controls.Add(downLabel);
+            groupBoxupdate.Controls.Add(infoLabel);
+            groupBoxupdate.Controls.Add(versionLabel);
+            updateButton.Click += new EventHandler(UpdateButton_Click);
+            laterButton.Click += new EventHandler(LaterButton_Click);
+            if (culture1.Name != "de-DE")
+            {
+                infoLabel.Text = "A new version is available";
+                laterButton.Text = "No";
+                updateButton.Text = "Yes";
+                downLabel.Text = "Update now";
+            }
+            void LaterButton_Click(object sender, EventArgs e)
+            {
+                groupBoxupdate.Dispose();
+                Controls.Remove(groupBoxupdate);
+                groupBox3.Enabled = true;
+            }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Version.txt");
+                var response = request.GetResponse();
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    versionLabel.Text = version;
+                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
+                    if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
+                    {
+                        Controls.Add(groupBoxupdate);
+                        groupBox3.Enabled = false;
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            void UpdateButton_Click(object sender, EventArgs e)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request2 = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Version.txt");
+                var response2 = request2.GetResponse();
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    reader.Close();
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    using (WebClient myWebClient2 = new WebClient())
+                    {
+                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorOperaUpd/releases/download/v{version}/Portable.Opera.Updater.v{version}.7z", @"Portable.Opera.Updater.v" + version + ".7z");
+                    }
+                    File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
+                        "timeout /t 1 /nobreak" + "\n" +
+                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Opera Updater.exe\"" + " -y\n" +
+                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Opera Updater.exe\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\n" +
+                        "exit\n");
+
+                    string arguments = " /c call Update.cmd";
+                    Process process = new Process();
+                    process.StartInfo.FileName = "cmd.exe";
+                    process.StartInfo.Arguments = arguments;
+                    process.Start();
+                    Close();
+                }
             }
         }
     }
