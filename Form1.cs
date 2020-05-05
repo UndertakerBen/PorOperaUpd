@@ -28,36 +28,61 @@ namespace Portable_Opera_Updater
         private readonly ToolTip toolTip = new ToolTip();
         public Form1()
         {
-            for (int i = 0; i <= 7; i++)
+            try
             {
-                WebRequest myWebRequest = WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
-                WebResponse myWebResponse = myWebRequest.GetResponse();
-                string resUrl = myWebResponse.ResponseUri.ToString();
-                string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
-                string[] resid = sresUrl.Split(new char[] { '=', '&', '%' });
-                myWebResponse.Close();
-                WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
-                WebResponse myWebResponse2 = myWebRequest2.GetResponse();
-                string resUrl2 = myWebResponse2.ResponseUri.ToString();
-                string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
-                string[] iVersion = sresUrl2.Split(new char[] { '/' });
-                buildVersion[i] = iVersion[1];
-                url[i] = myWebResponse2.ResponseUri.ToString();
-                myWebResponse2.Close();
+                for (int i = 0; i <= 7; i++)
+                {
+                    WebRequest myWebRequest = WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
+                    WebResponse myWebResponse = myWebRequest.GetResponse();
+                    string resUrl = myWebResponse.ResponseUri.ToString();
+                    string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
+                    string[] resid = sresUrl.Split(new char[] { '=', '&', '%' });
+                    myWebResponse.Close();
+                    WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
+                    WebResponse myWebResponse2 = myWebRequest2.GetResponse();
+                    string resUrl2 = myWebResponse2.ResponseUri.ToString();
+                    string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
+                    string[] iVersion = sresUrl2.Split(new char[] { '/' });
+                    buildVersion[i] = iVersion[1];
+                    url[i] = myWebResponse2.ResponseUri.ToString();
+                    myWebResponse2.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             InitializeComponent();
             label5.Text = buildVersion[0];
             label6.Text = buildVersion[1];
             label7.Text = buildVersion[2];
             label8.Text = buildVersion[3];
-            if (culture1.Name != "de-DE")
+            switch (culture1.TwoLetterISOLanguageName)
             {
-                button10.Text = "Quit";
-                button9.Text = "Install all";
-                label9.Text = "Install all x86 and or x64";
-                checkBox4.Text = "Ignore version check";
-                checkBox3.Text = "Create a Folder for each version";
-                checkBox5.Text = "Create a shortcut on the desktop";
+                case "ru":
+                    button10.Text = "Выход";
+                    button9.Text = "Установить все";
+                    label9.Text = "Установить все версии x86 и/или x64";
+                    checkBox4.Text = "Игнорировать проверку версии";
+                    checkBox3.Text = "Разные версии в отдельных папках";
+                    checkBox5.Text = "Создать ярлык на рабочем столе";
+                    break;
+                case "de":
+                    button10.Text = "Beenden";
+                    button9.Text = "Alle Installieren";
+                    label9.Text = "Alle x86 und oder x64 installieren";
+                    checkBox4.Text = "Versionkontrolle ignorieren";
+                    checkBox3.Text = "Für jede Version einen eigenen Ordner";
+                    checkBox5.Text = "Eine Verknüpfung auf dem Desktop erstellen";
+                    break;
+                default:
+                    button10.Text = "Quit";
+                    button9.Text = "Install all";
+                    label9.Text = "Install all x86 and or x64";
+                    checkBox4.Text = "Ignore version check";
+                    checkBox3.Text = "Create a Folder for each version";
+                    checkBox5.Text = "Create a shortcut on the desktop";
+                    break;
             }
             if (IntPtr.Size != 8)
             {
@@ -112,6 +137,30 @@ namespace Portable_Opera_Updater
                     if (File.Exists(@"Opera\launcher.exe"))
                     {
                         CheckButtonSingle();
+                    }
+                }
+            }
+            foreach (Process proc in Process.GetProcesses())
+            {
+                if (proc.ProcessName.Equals("opera"))
+                {
+                    switch (culture1.TwoLetterISOLanguageName)
+                    {
+                        case "ru":
+                            {
+                                MessageBox.Show("Необходимо закрыть Opera перед обновлением.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                        case "de":
+                            {
+                                MessageBox.Show("Bitte schließen Sie den laufenden Opera, bevor Sie den Browser aktualisieren.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                        default:
+                            {
+                                MessageBox.Show("Please close the running Opera before updating the browser.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
                     }
                 }
             }
@@ -315,7 +364,18 @@ namespace Portable_Opera_Updater
                         }
                         else
                         {
-                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
+                            switch (culture1.TwoLetterISOLanguageName)
+                            {
+                                case "ru":
+                                    downloadLabel.Text = "Распаковка";
+                                    break;
+                                case "de":
+                                    downloadLabel.Text = "Entpacken";
+                                    break;
+                                default:
+                                    downloadLabel.Text = "Unpacking";
+                                    break;
+                            }
                             string arguments = " x " + "\"" + "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe" + "\"" + " -o" + "\"" + @"Update\" + instDir[d] + "\"" + " -y";
                             Process process = new Process();
                             process.StartInfo.FileName = @"Bin\7zr.exe";
@@ -369,7 +429,18 @@ namespace Portable_Opera_Updater
                             {
                                 File.Delete(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
                             }
-                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
+                            switch (culture1.TwoLetterISOLanguageName)
+                            {
+                                case "ru":
+                                    downloadLabel.Text = "Распакованный";
+                                    break;
+                                case "de":
+                                    downloadLabel.Text = "Entpackt";
+                                    break;
+                                default:
+                                    downloadLabel.Text = "Unpacked";
+                                    break;
+                            }
                         }
                     };
                     try
@@ -390,15 +461,17 @@ namespace Portable_Opera_Updater
         }
         private void Message()
         {
-            if (culture1.Name != "de-DE")
+            switch (culture1.TwoLetterISOLanguageName)
             {
-                MessageBox.Show("The same version is already installed", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            else
-            {
-                MessageBox.Show("Die selbe Version ist bereits installiert", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
+                case "ru":
+                    MessageBox.Show("Данная версия уже установлена", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                case "de":
+                    MessageBox.Show("Die selbe Version ist bereits installiert", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                default:
+                    MessageBox.Show("The same version is already installed", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
             }
         }
         private void CheckButton()
@@ -421,13 +494,17 @@ namespace Portable_Opera_Updater
                     }
                     else if (buildVersion[i] != instVersion[0])
                     {
-                        if (culture1.Name != "de-DE")
+                        switch (culture1.TwoLetterISOLanguageName)
                         {
-                            button9.Text = "Update all";
-                        }
-                        else
-                        {
-                            button9.Text = "Alle Updaten";
+                            case "ru":
+                                button9.Text = "Обновить все";
+                                break;
+                            case "de":
+                                button9.Text = "Alle Updaten";
+                                break;
+                            default:
+                                button9.Text = "Update all";
+                                break;
                         }
                         button9.Enabled = true;
                         button9.BackColor = Color.FromArgb(224, 224, 224);
@@ -794,7 +871,6 @@ namespace Portable_Opera_Updater
                 Dock = DockStyle.None,
                 Location = new Point(2, 10),
                 Size = new Size(groupBoxupdate.Width - 4, 20),
-                Text = "Eine neue Version ist verfügbar"
             };
             infoLabel.Font = new Font(infoLabel.Font.Name, 8.75F);
             Label downLabel = new Label
@@ -802,18 +878,15 @@ namespace Portable_Opera_Updater
                 TextAlign = ContentAlignment.MiddleRight,
                 AutoSize = false,
                 Size = new Size(100, 23),
-                Text = "Jetzt Updaten"
             };
             Button laterButton = new Button
             {
-                Text = "Nein",
                 Size = new Size(40, 23),
                 BackColor = Color.FromArgb(224, 224, 224)
             };
             Button updateButton = new Button
             {
                 Location = new Point(groupBoxupdate.Width - Width - 10, 60),
-                Text = "Ja",
                 Size = new Size(40, 23),
                 BackColor = Color.FromArgb(224, 224, 224)
             };
@@ -827,12 +900,26 @@ namespace Portable_Opera_Updater
             groupBoxupdate.Controls.Add(versionLabel);
             updateButton.Click += new EventHandler(UpdateButton_Click);
             laterButton.Click += new EventHandler(LaterButton_Click);
-            if (culture1.Name != "de-DE")
+            switch (culture1.TwoLetterISOLanguageName)
             {
-                infoLabel.Text = "A new version is available";
-                laterButton.Text = "No";
-                updateButton.Text = "Yes";
-                downLabel.Text = "Update now";
+                case "ru":
+                    infoLabel.Text = "Доступна новая версия";
+                    laterButton.Text = "нет";
+                    updateButton.Text = "Да";
+                    downLabel.Text = "ОБНОВИТЬ";
+                    break;
+                case "de":
+                    infoLabel.Text = "Eine neue Version ist verfügbar";
+                    laterButton.Text = "Nein";
+                    updateButton.Text = "Ja";
+                    downLabel.Text = "Jetzt Updaten";
+                    break;
+                default:
+                    infoLabel.Text = "A new version is available";
+                    laterButton.Text = "No";
+                    updateButton.Text = "Yes";
+                    downLabel.Text = "Update now";
+                    break;
             }
             void LaterButton_Click(object sender, EventArgs e)
             {
@@ -850,7 +937,7 @@ namespace Portable_Opera_Updater
                     var version = reader.ReadToEnd();
                     versionLabel.Text = version;
                     FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
-                    if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
+                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
                     {
                         Controls.Add(groupBoxupdate);
                         groupBox3.Enabled = false;
@@ -891,6 +978,56 @@ namespace Portable_Opera_Updater
                     process.Start();
                     Close();
                 }
+            }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Launcher/Version.txt");
+                var response = request.GetResponse();
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Opera Launcher.exe");
+                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    {
+                        reader.Close();
+                        try
+                        {
+                            using (WebClient myWebClient2 = new WebClient())
+                            {
+                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Launcher/Launcher.7z", @"Launcher.7z");
+                            }
+                            string arguments = " x " + @"Launcher.7z" + " -o" + @"Bin\\Launcher" + " -y";
+                            Process process = new Process();
+                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                            process.StartInfo.Arguments = arguments;
+                            process.Start();
+                            process.WaitForExit();
+                            File.Delete(@"Launcher.7z");
+                            foreach (string launcher in instDir)
+                            {
+                                if (File.Exists(launcher + " Launcher.exe"))
+                                {
+                                    FileVersionInfo binLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\" + launcher + " Launcher.exe");
+                                    FileVersionInfo istLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\" + launcher + " Launcher.exe");
+                                    if (Convert.ToDecimal(binLauncher.FileVersion) > Convert.ToDecimal(istLauncher.FileVersion))
+                                    {
+                                        File.Copy(@"bin\\Launcher\\" + launcher + " Launcher.exe", launcher + " Launcher.exe", true);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
