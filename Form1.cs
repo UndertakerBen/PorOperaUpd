@@ -57,33 +57,6 @@ namespace Portable_Opera_Updater
             label6.Text = buildVersion[1];
             label7.Text = buildVersion[2];
             label8.Text = buildVersion[3];
-            switch (culture1.TwoLetterISOLanguageName)
-            {
-                case "ru":
-                    button10.Text = "Выход";
-                    button9.Text = "Установить все";
-                    label9.Text = "Установить все версии x86 и/или x64";
-                    checkBox4.Text = "Игнорировать проверку версии";
-                    checkBox3.Text = "Разные версии в отдельных папках";
-                    checkBox5.Text = "Создать ярлык на рабочем столе";
-                    break;
-                case "de":
-                    button10.Text = "Beenden";
-                    button9.Text = "Alle Installieren";
-                    label9.Text = "Alle x86 und oder x64 installieren";
-                    checkBox4.Text = "Versionkontrolle ignorieren";
-                    checkBox3.Text = "Für jede Version einen eigenen Ordner";
-                    checkBox5.Text = "Eine Verknüpfung auf dem Desktop erstellen";
-                    break;
-                default:
-                    button10.Text = "Quit";
-                    button9.Text = "Install all";
-                    label9.Text = "Install all x86 and or x64";
-                    checkBox4.Text = "Ignore version check";
-                    checkBox3.Text = "Create a Folder for each version";
-                    checkBox5.Text = "Create a shortcut on the desktop";
-                    break;
-            }
             if (IntPtr.Size != 8)
             {
                 button5.Visible = false;
@@ -140,31 +113,15 @@ namespace Portable_Opera_Updater
                     }
                 }
             }
+            CheckUpdate();
             foreach (Process proc in Process.GetProcesses())
             {
                 if (proc.ProcessName.Equals("opera"))
                 {
-                    switch (culture1.TwoLetterISOLanguageName)
-                    {
-                        case "ru":
-                            {
-                                MessageBox.Show("Необходимо закрыть Opera перед обновлением.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                        case "de":
-                            {
-                                MessageBox.Show("Bitte schließen Sie den laufenden Opera, bevor Sie den Browser aktualisieren.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                        default:
-                            {
-                                MessageBox.Show("Please close the running Opera before updating the browser.", "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                    }
+                    MessageBox.Show(Langfile.Texts("MeassageRunning"), "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            CheckUpdate();
+           
         }
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -364,18 +321,7 @@ namespace Portable_Opera_Updater
                         }
                         else
                         {
-                            switch (culture1.TwoLetterISOLanguageName)
-                            {
-                                case "ru":
-                                    downloadLabel.Text = "Распаковка";
-                                    break;
-                                case "de":
-                                    downloadLabel.Text = "Entpacken";
-                                    break;
-                                default:
-                                    downloadLabel.Text = "Unpacking";
-                                    break;
-                            }
+                            downloadLabel.Text = Langfile.Texts("downUnpstart");
                             string arguments = " x " + "\"" + "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe" + "\"" + " -o" + "\"" + @"Update\" + instDir[d] + "\"" + " -y";
                             Process process = new Process();
                             process.StartInfo.FileName = @"Bin\7zr.exe";
@@ -429,18 +375,7 @@ namespace Portable_Opera_Updater
                             {
                                 File.Delete(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
                             }
-                            switch (culture1.TwoLetterISOLanguageName)
-                            {
-                                case "ru":
-                                    downloadLabel.Text = "Распакованный";
-                                    break;
-                                case "de":
-                                    downloadLabel.Text = "Entpackt";
-                                    break;
-                                default:
-                                    downloadLabel.Text = "Unpacked";
-                                    break;
-                            }
+                            downloadLabel.Text = Langfile.Texts("downUnpfine");
                         }
                     };
                     try
@@ -461,18 +396,7 @@ namespace Portable_Opera_Updater
         }
         private void Message()
         {
-            switch (culture1.TwoLetterISOLanguageName)
-            {
-                case "ru":
-                    MessageBox.Show("Данная версия уже установлена", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                case "de":
-                    MessageBox.Show("Die selbe Version ist bereits installiert", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                default:
-                    MessageBox.Show("The same version is already installed", "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-            }
+            MessageBox.Show(Langfile.Texts("MeassageVersion"), "Portabel Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
         private void CheckButton()
         {
@@ -494,18 +418,7 @@ namespace Portable_Opera_Updater
                     }
                     else if (buildVersion[i] != instVersion[0])
                     {
-                        switch (culture1.TwoLetterISOLanguageName)
-                        {
-                            case "ru":
-                                button9.Text = "Обновить все";
-                                break;
-                            case "de":
-                                button9.Text = "Alle Updaten";
-                                break;
-                            default:
-                                button9.Text = "Update all";
-                                break;
-                        }
+                        button9.Text = Langfile.Texts("Button9UAll");
                         button9.Enabled = true;
                         button9.BackColor = Color.FromArgb(224, 224, 224);
                         if (buttons.Length > 0)
@@ -746,7 +659,6 @@ namespace Portable_Opera_Updater
         }
         private async void NewMethod5(int a, int b, int c, int d)
         {
-            var buttons = Controls.Find("button" + (a + 1), true);
             if (File.Exists(@"Opera\updates\Version.log"))
             {
                 string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
@@ -841,6 +753,7 @@ namespace Portable_Opera_Updater
             if ((instVersion[1] == ring[a]) && (instVersion[2] == arch))
             {
                 toolTip.SetToolTip(button, instVersion[0]);
+                toolTip.IsBalloon = true;
             }
             else
             {
@@ -900,27 +813,10 @@ namespace Portable_Opera_Updater
             groupBoxupdate.Controls.Add(versionLabel);
             updateButton.Click += new EventHandler(UpdateButton_Click);
             laterButton.Click += new EventHandler(LaterButton_Click);
-            switch (culture1.TwoLetterISOLanguageName)
-            {
-                case "ru":
-                    infoLabel.Text = "Доступна новая версия";
-                    laterButton.Text = "нет";
-                    updateButton.Text = "Да";
-                    downLabel.Text = "ОБНОВИТЬ";
-                    break;
-                case "de":
-                    infoLabel.Text = "Eine neue Version ist verfügbar";
-                    laterButton.Text = "Nein";
-                    updateButton.Text = "Ja";
-                    downLabel.Text = "Jetzt Updaten";
-                    break;
-                default:
-                    infoLabel.Text = "A new version is available";
-                    laterButton.Text = "No";
-                    updateButton.Text = "Yes";
-                    downLabel.Text = "Update now";
-                    break;
-            }
+            infoLabel.Text = Langfile.Texts("infoLabel");
+            laterButton.Text = Langfile.Texts("laterButton");
+            updateButton.Text = Langfile.Texts("updateButton");
+            downLabel.Text = Langfile.Texts("downLabel");
             void LaterButton_Click(object sender, EventArgs e)
             {
                 groupBoxupdate.Dispose();
@@ -935,8 +831,8 @@ namespace Portable_Opera_Updater
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     var version = reader.ReadToEnd();
-                    versionLabel.Text = version;
                     FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
+                    versionLabel.Text = testm.FileVersion + "  >>> " + version;
                     if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
                     {
                         Controls.Add(groupBoxupdate);
@@ -1022,6 +918,303 @@ namespace Portable_Opera_Updater
                         {
 
                         }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        private void VersionsInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileVersionInfo updVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
+            FileVersionInfo launcherVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Opera Launcher.exe");
+            MessageBox.Show("Updater Version - " + updVersion.FileVersion + "\nLauncher Version - " + launcherVersion.FileVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void RegistrierenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[8]);
+        }
+        private void RegistrierenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[3]);
+        }
+        private void RegistrierenToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[7]);
+        }
+        private void RegistrierenToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[2]);
+        }
+        private void RegistrierenToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[6]);
+        }
+        private void RegistrierenToolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[1]);
+        }
+        private void RegistrierenToolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[5]);
+        }
+        private void RegistrierenToolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[0]);
+        }
+        private void RegistrierenToolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[4]);
+        }
+        private void EntfernenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem1.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem2.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem3.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem4.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem5.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem6.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem7.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void EntfernenToolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem8.Enabled = true;
+            Regfile.RegDel();
+        }
+        private void ExtrasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Microsoft.Win32.RegistryKey key;
+                if (Microsoft.Win32.Registry.GetValue("HKEY_Current_User\\Software\\Clients\\StartMenuInternet\\Opera.PORTABLE", default, null) != null)
+                {
+                    key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\Clients\\StartMenuInternet\\Opera.PORTABLE", false);
+                    switch (key.GetValue(default).ToString())
+                    {
+                        case "Opera Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Stable x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem1.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Stable x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem2.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Beta x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem3.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Beta x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem4.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Dev x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem5.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera Dev x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem6.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera GX x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem7.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Opera GX x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem8.Enabled = false;
+                            operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            break;
+                    }
+                }
+                else
+                {
+                    if (Directory.Exists(@"Opera"))
+                    {
+                        operaAlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Stable x86"))
+                    {
+                        operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Stable x64"))
+                    {
+                        operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Beta x86"))
+                    {
+                        operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Beta x64"))
+                    {
+                        operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Dev x86"))
+                    {
+                        operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera Dev x64"))
+                    {
+                        operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera GX x86"))
+                    {
+                        operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaGXX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Opera GX x64"))
+                    {
+                        operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        operaGXX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
                     }
                 }
             }
