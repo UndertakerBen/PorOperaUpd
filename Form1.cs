@@ -14,7 +14,7 @@ namespace Portable_Opera_Updater
 {
     public partial class Form1 : Form
     {
-        private static readonly string[] product = new string[8] { "=www&opsys=Windows&product=Opera+GX", "=www&opsys=Windows&product=Opera developer", "=www&opsys=Windows&product=Opera beta", "=www&opsys=Windows", "=www&opsys=Windows&product=Opera+GX&arch=x64", "=www&opsys=Windows&product=Opera developer&arch=x64", "=www&opsys=Windows&product=Opera beta&arch=x64", "=www&opsys=Windows&arch=x64" };
+        private static readonly string[] product = new string[8] { "=www&opsys=Windows&product=Opera+GX&arch=i386", "=www&opsys=Windows&product=Opera+developer&arch=i386", "=www&opsys=Windows&product=Opera+beta&arch=i386", "=www&opsys=Windows&arch=i386", "=www&opsys=Windows&product=Opera+GX&arch=x64", "=www&opsys=Windows&product=Opera developer&arch=x64", "=www&opsys=Windows&product=Opera beta&arch=x64", "=www&opsys=Windows&arch=x64" };
         private static readonly string[] splitRing = new string[8] { "opera_gx", "opera-developer", "opera-beta", "desktop", "opera_gx", "opera-developer", "opera-beta", "desktop" };
         private static readonly string[] ring = new string[8] { "Opera GX", "Developer", "Beta", "Stable", "Opera GX", "Developer", "Beta", "Stable" };
         private static readonly string[] buildVersion = new string[8];
@@ -32,12 +32,15 @@ namespace Portable_Opera_Updater
             {
                 for (int i = 0; i <= 7; i++)
                 {
-                    WebRequest myWebRequest = WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    HttpWebRequest myWebRequest = (HttpWebRequest)WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
+                    myWebRequest.UserAgent = "Mozilla / 5.0(Windows NT 10.0; Win64; x64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 84.0.4147.105 Safari / 537.36 OPR / 70.0.3728.119";
                     WebResponse myWebResponse = myWebRequest.GetResponse();
                     string resUrl = myWebResponse.ResponseUri.ToString();
                     string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
                     string[] resid = sresUrl.Split(new char[] { '=', '&', '%' });
                     myWebResponse.Close();
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
                     WebResponse myWebResponse2 = myWebRequest2.GetResponse();
                     string resUrl2 = myWebResponse2.ResponseUri.ToString();
