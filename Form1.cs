@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -9,17 +8,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Portable_Opera_Updater
 {
     public partial class Form1 : Form
     {
-        private static readonly string[] product = new string[8] { "=www&opsys=Windows&product=Opera+GX&arch=i386", "=www&opsys=Windows&product=Opera+developer&arch=i386", "=www&opsys=Windows&product=Opera+beta&arch=i386", "=www&opsys=Windows&arch=i386", "=www&opsys=Windows&product=Opera+GX&arch=x64", "=www&opsys=Windows&product=Opera developer&arch=x64", "=www&opsys=Windows&product=Opera beta&arch=x64", "=www&opsys=Windows&arch=x64" };
-        private static readonly string[] splitRing = new string[8] { "opera_gx", "opera-developer", "opera-beta", "desktop", "opera_gx", "opera-developer", "opera-beta", "desktop" };
+        private static readonly string[] splitRing = new string[8] { "Opera_GX_", "Opera_Developer_", "Opera_beta_", "Opera_", "Opera_GX_", "Opera_Developer_", "Opera_beta_", "Opera_" };
+        private static readonly string[,] product = new string[8, 3] { { "v4", "gx/Stable", "i386" }, { "v2", "Developer", "i386" }, { "v2", "Beta", "i386" }, { "v2", "Stable", "i386" }, { "v4", "gx/Stable", "x64" }, { "v2", "Developer", "x64" }, { "v2", "Beta", "x64" }, { "v2", "Stable", "x64" } };
+        private static readonly string[,] urlbase = new string[8, 2] { { "opera_gx", "" }, { "opera-developer", "" }, { "opera-beta", "" }, { "opera/desktop", "" }, { "opera_gx", "_x64" }, { "opera-developer", "_x64" }, { "opera-beta", "_x64" }, { "opera/desktop", "_x64" } };
         private static readonly string[] ring = new string[8] { "Opera GX", "Developer", "Beta", "Stable", "Opera GX", "Developer", "Beta", "Stable" };
         private static readonly string[] buildVersion = new string[8];
         private static readonly string[] url = new string[8];
-        private static readonly string[] fileName = new string[8] { "Opera-GX-x86.exe", "Opera-Developer-x86.exe", "Opera-Beta-x86.exe", "Opera-Stable-x86.exe", "Opera-GX-x64.exe", "Opera-Developer-x64.exe", "Opera-Beta-x64.exe", "Opera-Stable-x64.exe" };
         private static readonly string[] instDir = new string[9] { "Opera GX x86", "Opera Dev x86", "Opera Beta x86", "Opera Stable x86", "Opera GX x64", "Opera Dev x64", "Opera Beta x64", "Opera Stable x64", "Opera" };
         private static readonly string[] arch = new string[2] { "x86", "x64" };
         private readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
@@ -33,22 +33,24 @@ namespace Portable_Opera_Updater
                 for (int i = 0; i <= 7; i++)
                 {
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    HttpWebRequest myWebRequest = (HttpWebRequest)WebRequest.Create("https://download.opera.com/download/get/?partner" + product[i]);
-                    myWebRequest.UserAgent = "Mozilla / 5.0(Windows NT 10.0; Win64; x64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 84.0.4147.105 Safari / 537.36 OPR / 70.0.3728.119";
-                    WebResponse myWebResponse = myWebRequest.GetResponse();
-                    string resUrl = myWebResponse.ResponseUri.ToString();
-                    string sresUrl = resUrl.Substring(resUrl.IndexOf("=id="));
-                    string[] resid = sresUrl.Split(new char[] { '=', '&', '%' });
-                    myWebResponse.Close();
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    WebRequest myWebRequest2 = WebRequest.Create("https://download.opera.com/download/get/?id=" + resid[2] + "&amp;location=415&amp;nothanks=yes");
-                    WebResponse myWebResponse2 = myWebRequest2.GetResponse();
-                    string resUrl2 = myWebResponse2.ResponseUri.ToString();
-                    string sresUrl2 = resUrl2.Substring(resUrl2.IndexOf(splitRing[i]));
-                    string[] iVersion = sresUrl2.Split(new char[] { '/' });
-                    buildVersion[i] = iVersion[1];
-                    url[i] = myWebResponse2.ResponseUri.ToString();
-                    myWebResponse2.Close();
+                    string postData = "NzI2ODkyZmJiODE4NTA0MmE1YzY3Y2MyNDhmMTZhNzQ2Yjc0OGYyYjE0NGY1YzRhZjJkM2RiOTU5YzQ1ZmRiMDp7ImNvdW50cnkiOiJERSIsImh0dHBfcmVmZXJyZXIiOiJodHRwczovL3d3dy5vcGVyYS5jb20vZGUvY29tcHV0ZXIvdGhhbmtzP25pPWVhcGd4Jm9zPXdpbmRvd3MiLCJpbnN0YWxsZXJfbmFtZSI6Ik9wZXJhR1hTZXR1cC5leGUiLCJwcm9kdWN0Ijoib3BlcmFfZ3giLCJxdWVyeSI6Ii9vcGVyYV9neC9zdGFibGUvd2luZG93cz91dG1fdHJ5YWdhaW49eWVzJnV0bV9zb3VyY2U9Z29vZ2xlX3ZpYV9vcGVyYV9jb20mdXRtX21lZGl1bT1vc2UmdXRtX2NhbXBhaWduPShub25lKV92aWFfb3BlcmFfY29tX2h0dHBzJmh0dHBfcmVmZXJyZXI9aHR0cHMlM0ElMkYlMkZ3d3cuZ29vZ2xlLmNvbSUyRiZ1dG1fc2l0ZT1vcGVyYV9jb20mdXRtX2xhc3RwYWdlPW9wZXJhLmNvbS9neCZkbF90b2tlbj0zNDkyNzQxNSIsInRpbWVzdGFtcCI6IjE2MTQ0MTg0NzcuNzExMCIsInVzZXJhZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS84OC4wLjQzMjQuMTUwIFNhZmFyaS81MzcuMzYgT1BSLzc0LjAuMzkxMS4xNjAiLCJ1dG0iOnsiY2FtcGFpZ24iOiIobm9uZSlfdmlhX29wZXJhX2NvbV9odHRwcyIsImxhc3RwYWdlIjoib3BlcmEuY29tL2d4IiwibWVkaXVtIjoib3NlIiwic2l0ZSI6Im9wZXJhX2NvbSIsInNvdXJjZSI6Imdvb2dsZV92aWFfb3BlcmFfY29tIiwidHJ5YWdhaW4iOiJ5ZXMifSwidXVpZCI6IjJjZTM4MDM0LWNlYzYtNDdlOS1iZDE4LTg0MmFlNTM4MjJhZSJ9";
+                    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://autoupdate.geo.opera.com/" + product[i, 0] + "/netinstaller/" + product[i, 1] + "/windows/" + product[i, 2]);
+                    request.Method = "POST";
+                    request.UserAgent = "Opera NetInstaller/74.0.3911.160";
+                    request.ContentLength = byteArray.Length;
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    using (dataStream = request.GetResponse().GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(dataStream);
+                        string responseFromServer = reader.ReadToEnd();
+                        string version = responseFromServer.Substring(responseFromServer.IndexOf("installer_filename\": \"")).Replace("installer_filename\": \"", "").Split(new char[] { ',' }, 2)[0].Replace(splitRing[i], "").Split(new char[] { '_' }, 2)[0];
+                        url[i] = "https://download3.operacdn.com/pub/" + urlbase[i, 0] + "/" + version + "/win/" + splitRing[i] + version + "_Setup" + urlbase[i, 1] + ".exe";
+                        buildVersion[i] = version;
+                        reader.Close();
+                        dataStream.Close();
+                    }
                 }
             }
             catch (Exception ex)
