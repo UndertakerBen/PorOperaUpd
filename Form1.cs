@@ -46,7 +46,7 @@ namespace Portable_Opera_Updater
                         StreamReader reader = new StreamReader(dataStream);
                         string responseFromServer = reader.ReadToEnd();
                         string version = responseFromServer.Substring(responseFromServer.IndexOf("installer_filename\": \"")).Replace("installer_filename\": \"", "").Split(new char[] { ',' }, 2)[0].Replace(splitRing[i], "").Split(new char[] { '_' }, 2)[0];
-                        url[i] = "https://download3.operacdn.com/pub/" + urlbase[i, 0] + "/" + version + "/win/" + splitRing[i] + version + "_Setup" + urlbase[i, 1] + ".exe";
+                        url[i] = responseFromServer.Substring(responseFromServer.IndexOf("installer\": \"https")).Replace("installer\": \"", "").Split(new char[] { ',' }, 2)[0];
                         buildVersion[i] = version;
                         reader.Close();
                         dataStream.Close();
