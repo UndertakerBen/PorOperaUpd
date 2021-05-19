@@ -25,6 +25,7 @@ namespace Portable_Opera_Updater
         private readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
         private readonly string deskDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         private readonly string applicationPath = Application.StartupPath;
+        private readonly string[] CommandLineArgs = Environment.GetCommandLineArgs();
         private readonly ToolTip toolTip = new ToolTip();
         public Form1()
         {
@@ -35,7 +36,7 @@ namespace Portable_Opera_Updater
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     string postData = "NzI2ODkyZmJiODE4NTA0MmE1YzY3Y2MyNDhmMTZhNzQ2Yjc0OGYyYjE0NGY1YzRhZjJkM2RiOTU5YzQ1ZmRiMDp7ImNvdW50cnkiOiJERSIsImh0dHBfcmVmZXJyZXIiOiJodHRwczovL3d3dy5vcGVyYS5jb20vZGUvY29tcHV0ZXIvdGhhbmtzP25pPWVhcGd4Jm9zPXdpbmRvd3MiLCJpbnN0YWxsZXJfbmFtZSI6Ik9wZXJhR1hTZXR1cC5leGUiLCJwcm9kdWN0Ijoib3BlcmFfZ3giLCJxdWVyeSI6Ii9vcGVyYV9neC9zdGFibGUvd2luZG93cz91dG1fdHJ5YWdhaW49eWVzJnV0bV9zb3VyY2U9Z29vZ2xlX3ZpYV9vcGVyYV9jb20mdXRtX21lZGl1bT1vc2UmdXRtX2NhbXBhaWduPShub25lKV92aWFfb3BlcmFfY29tX2h0dHBzJmh0dHBfcmVmZXJyZXI9aHR0cHMlM0ElMkYlMkZ3d3cuZ29vZ2xlLmNvbSUyRiZ1dG1fc2l0ZT1vcGVyYV9jb20mdXRtX2xhc3RwYWdlPW9wZXJhLmNvbS9neCZkbF90b2tlbj0zNDkyNzQxNSIsInRpbWVzdGFtcCI6IjE2MTQ0MTg0NzcuNzExMCIsInVzZXJhZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS84OC4wLjQzMjQuMTUwIFNhZmFyaS81MzcuMzYgT1BSLzc0LjAuMzkxMS4xNjAiLCJ1dG0iOnsiY2FtcGFpZ24iOiIobm9uZSlfdmlhX29wZXJhX2NvbV9odHRwcyIsImxhc3RwYWdlIjoib3BlcmEuY29tL2d4IiwibWVkaXVtIjoib3NlIiwic2l0ZSI6Im9wZXJhX2NvbSIsInNvdXJjZSI6Imdvb2dsZV92aWFfb3BlcmFfY29tIiwidHJ5YWdhaW4iOiJ5ZXMifSwidXVpZCI6IjJjZTM4MDM0LWNlYzYtNDdlOS1iZDE4LTg0MmFlNTM4MjJhZSJ9";
                     byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://autoupdate.geo.opera.com/" + product[i, 0] + "/netinstaller/" + product[i, 1] + "/windows/" + product[i, 2]);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://autoupdate.geo.opera.com/{product[i, 0]}/netinstaller/{product[i, 1]}/windows/{product[i, 2]}");
                     request.Method = "POST";
                     request.UserAgent = "Opera NetInstaller/74.0.3911.160";
                     request.ContentLength = byteArray.Length;
@@ -72,15 +73,15 @@ namespace Portable_Opera_Updater
             }
             if (IntPtr.Size == 8)
             {
-                if ((File.Exists(instDir[4]+ "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
+                if (File.Exists($"{applicationPath}\\{instDir[4]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[5]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[6]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[7]}\\launcher.exe"))
                 {
                     checkBox2.Enabled = false;
                 }
-                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")))
+                if (File.Exists($"{applicationPath}\\{instDir[0]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[1]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[2]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[3]}\\launcher.exe"))
                 {
                     checkBox1.Enabled = false;
                 }
-                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")) || (File.Exists(instDir[4] + "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
+                if (File.Exists($"{applicationPath}\\{instDir[0]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[1]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[2]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[3]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[4]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[5]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[6]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[7]}\\launcher.exe"))
                 {
                     checkBox3.Checked = true;
                     button9.BackColor = Color.FromArgb(244, 244, 244);
@@ -93,7 +94,7 @@ namespace Portable_Opera_Updater
                     button9.Enabled = false;
                     button9.BackColor = Color.FromArgb(244, 244, 244);
 
-                    if (File.Exists(@"Opera\launcher.exe"))
+                    if (File.Exists(applicationPath + "\\Opera\\launcher.exe"))
                     {
                         CheckButtonSingle();
                     }
@@ -101,7 +102,7 @@ namespace Portable_Opera_Updater
             }
             else if (IntPtr.Size != 8)
             {
-                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")))
+                if (File.Exists($"{applicationPath}\\{instDir[0]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[1]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[2]}\\launcher.exe") || File.Exists($"{applicationPath}\\{instDir[3]}\\launcher.exe"))
                 {
                     checkBox3.Checked = true;
                     checkBox1.Enabled = false;
@@ -112,13 +113,12 @@ namespace Portable_Opera_Updater
                     checkBox1.Enabled = false;
                     button9.Enabled = false;
                     button9.BackColor = Color.FromArgb(244, 244, 244);
-                    if (File.Exists(@"Opera\launcher.exe"))
+                    if (File.Exists($"{applicationPath}\\Opera\\launcher.exe"))
                     {
                         CheckButtonSingle();
                     }
                 }
             }
-            CheckUpdate();
             foreach (Process proc in Process.GetProcesses())
             {
                 if (proc.ProcessName.Equals("opera"))
@@ -126,9 +126,22 @@ namespace Portable_Opera_Updater
                     MessageBox.Show(Langfile.Texts("MeassageRunning"), "Portable Opera Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-           
+            _ = TestCheck();
         }
-        private void Button1_Click(object sender, EventArgs e)
+        private async Task TestCheck()
+        {
+            await CheckUpdate();
+            for (int i = 0; i < CommandLineArgs.GetLength(0); i++)
+            {
+                if (CommandLineArgs[i].ToLower().Equals("-updateall"))
+                {
+                    await UpdateAll();
+                    await Task.Delay(2000);
+                    Application.Exit();
+                }
+            }
+        }
+        private async void Button1_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -136,10 +149,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(0, 0, 1, 8);
+                await NewMethod5(0, 0, 1, 8);
             }
         }
-        private void Button2_Click(object sender, EventArgs e)
+        private async void Button2_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -147,11 +160,11 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(1, 0, 2, 8);
+                await NewMethod5(1, 0, 2, 8);
             }
         }
 
-        private void Button3_Click(object sender, EventArgs e)
+        private async void Button3_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -159,10 +172,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(2, 0, 3, 8);
+                await NewMethod5(2, 0, 3, 8);
             }
         }
-        private void Button4_Click(object sender, EventArgs e)
+        private async void Button4_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -170,10 +183,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(3, 0, 4, 8);
+                await NewMethod5(3, 0, 4, 8);
             }
         }
-        private void Button5_Click(object sender, EventArgs e)
+        private async void Button5_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -181,10 +194,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(4, 1, 5, 8);
+                await NewMethod5(4, 1, 5, 8);
             }
         }
-        private void Button6_Click(object sender, EventArgs e)
+        private async void Button6_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -192,10 +205,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(5, 1, 6, 8);
+                await NewMethod5(5, 1, 6, 8);
             }
         }
-        private void Button7_Click(object sender, EventArgs e)
+        private async void Button7_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -203,10 +216,10 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(6, 1, 7, 8);
+                await NewMethod5(6, 1, 7, 8);
             }
         }
-        private void Button8_Click(object sender, EventArgs e)
+        private async void Button8_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
@@ -214,7 +227,7 @@ namespace Portable_Opera_Updater
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod5(7, 1, 8, 8);
+                await NewMethod5(7, 1, 8, 8);
             }
         }
         private async void Button9_Click(object sender, EventArgs e)
@@ -223,7 +236,7 @@ namespace Portable_Opera_Updater
         }
         private async Task Testing()
         {
-            if ((!Directory.Exists(instDir[0])) && (!Directory.Exists(instDir[1])) && (!Directory.Exists(instDir[2])) && (!Directory.Exists(instDir[3])) && checkBox1.Checked)
+            if ((!Directory.Exists($"{applicationPath}\\{instDir[0]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[1]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[2]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[3]}")) && checkBox1.Checked)
             {
                 await DownloadFile(0, 0, 1, 0);
                 await DownloadFile(1, 0, 2, 1);
@@ -238,7 +251,7 @@ namespace Portable_Opera_Updater
             await NewMethod7(3, 0, 4, 3);
             if (IntPtr.Size == 8)
             {
-                if ((!Directory.Exists(instDir[4])) && (!Directory.Exists(instDir[5])) && (!Directory.Exists(instDir[6])) && (!Directory.Exists(instDir[7])) && checkBox2.Checked)
+                if ((!Directory.Exists($"{applicationPath}\\{instDir[4]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[5]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[6]}")) && (!Directory.Exists($"{applicationPath}\\{instDir[7]}")) && checkBox2.Checked)
                 {
                     await DownloadFile(4, 1, 5, 4);
                     await DownloadFile(5, 1, 6, 5);
@@ -253,6 +266,74 @@ namespace Portable_Opera_Updater
                 await NewMethod7(7, 1, 8, 7);
             }
         }
+        private async Task UpdateAll()
+        {
+            if (Directory.Exists($"{applicationPath}\\Opera"))
+            {
+                if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
+                {
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\Opera\\updates\\Version.log").Split(new char[] { '|' });
+                    if (instVersion[1] == "Opera GX" & instVersion[2] == "x86")
+                    {
+                        if (new Version(buildVersion[0]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(0, 0, 1, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Developer" & instVersion[2] == "x86")
+                    {
+                        if (new Version(buildVersion[1]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(1, 0, 2, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Beta" & instVersion[2] == "x86")
+                    {
+                        if (new Version(buildVersion[2]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(2, 0, 3, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Stable" & instVersion[2] == "x86")
+                    {
+                        if (new Version(buildVersion[3]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(3, 0, 4, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Opera GX" & instVersion[2] == "x64")
+                    {
+                        if (new Version(buildVersion[4]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(4, 1, 5, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Developer" & instVersion[2] == "x64")
+                    {
+                        if (new Version(buildVersion[5]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(5, 1, 6, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Beta" & instVersion[2] == "x64")
+                    {
+                        if (new Version(buildVersion[6]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(6, 1, 7, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Stable" & instVersion[2] == "x64")
+                    {
+                        if (new Version(buildVersion[7]) > new Version(instVersion[0]))
+                        {
+                            await NewMethod5(7, 1, 8, 8);
+                        }
+                    }
+                }
+            }
+            await Testing();
+            await Task.WhenAll();
+        }
         private async Task DownloadFile(int a, int b, int c, int d)
         {
             GroupBox progressBox = new GroupBox
@@ -266,7 +347,7 @@ namespace Portable_Opera_Updater
                 AutoSize = false,
                 Location = new Point(2, 10),
                 Size = new Size(progressBox.Width - 4, 25),
-                Text = "Opera " + ring[a] + " " + buildVersion[a] + " " + arch[b],
+                Text = $"Opera {ring[a]} {buildVersion[a]} {arch[b]}",
                 TextAlign = ContentAlignment.BottomCenter
             };
             title.Font = new Font(title.Font.Name, 9.25F, FontStyle.Bold);
@@ -327,18 +408,18 @@ namespace Portable_Opera_Updater
                         else
                         {
                             downloadLabel.Text = Langfile.Texts("downUnpstart");
-                            string arguments = " x " + "\"" + "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe" + "\"" + " -o" + "\"" + @"Update\" + instDir[d] + "\"" + " -y";
+                            string arguments = $" x \"{applicationPath}\\Opera_{buildVersion[a]}_{ring[a]}_{arch[b]}.exe\" -o\"{applicationPath}\\Update\\{instDir[d]}\" -y";
                             Process process = new Process();
-                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.FileName = $"{applicationPath}\\Bin\\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                             process.StartInfo.Arguments = arguments;
                             process.Start();
                             process.WaitForExit();
-                            if ((File.Exists(@"Update\" + instDir[d] + "\\launcher.exe")) && (File.Exists(instDir[d] + "\\updates\\Version.log")))
+                            if ((File.Exists($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe")) && (File.Exists($"{applicationPath}\\{instDir[d]}\\updates\\Version.log")))
                             {
-                                string instTVersion = File.ReadAllText(instDir[d] + "\\updates\\Version.log");
-                                string[] instVersion = NewMethod(instTVersion);
-                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + instDir[d] + "\\launcher.exe");
+                                string instTVersion = File.ReadAllText($"{applicationPath}\\{instDir[d]}\\updates\\Version.log");
+                                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
+                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe");
                                 if (checkBox3.Checked)
                                 {
                                     if (testm.FileVersion != instVersion[0])
@@ -357,35 +438,35 @@ namespace Portable_Opera_Updater
                             }
                             else
                             {
-                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Update\\" + instDir[d] + "\\launcher.exe");
+                                FileVersionInfo testm = FileVersionInfo.GetVersionInfo($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe");
                                 NewMethod6(a, b, d, testm);
                             }
                             if (checkBox5.Checked)
                             {
-                                if (!File.Exists(deskDir + "\\" + instDir[d] + ".lnk"))
+                                if (!File.Exists($"{deskDir}\\{instDir[d]}.lnk"))
                                 {
                                     IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-                                    IWshRuntimeLibrary.IWshShortcut link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(deskDir + "\\" + instDir[d] + ".lnk");
-                                    link.IconLocation = applicationPath + "\\" + instDir[d] + "\\launcher.exe,0";
+                                    IWshRuntimeLibrary.IWshShortcut link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut($"{deskDir}\\{instDir[d]}.lnk");
+                                    link.IconLocation = $"{applicationPath}\\{instDir[d]}\\launcher.exe,0";
                                     link.WorkingDirectory = applicationPath;
-                                    link.TargetPath = applicationPath + "\\" + instDir[d] + " Launcher.exe";
+                                    link.TargetPath = $"{applicationPath}\\{instDir[d]} Launcher.exe";
                                     link.Save();
                                 }
                             }
-                            if (!File.Exists(applicationPath + "\\" + instDir[d] + " Launcher.exe"))
+                            if (!File.Exists($"{applicationPath}\\{instDir[d]} Launcher.exe"))
                             {
-                                File.Copy(@"Bin\Launcher\" + instDir[d] + " Launcher.exe", applicationPath + "\\" + instDir[d] + " Launcher.exe");
+                                File.Copy($"{@applicationPath}\\Bin\\Launcher\\{instDir[d]} Launcher.exe", applicationPath + "\\" + instDir[d] + " Launcher.exe");
                             }
-                            if (File.Exists(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe"))
+                            if (File.Exists($"{applicationPath}\\Opera_{buildVersion[a]}_{ring[a]}_{arch[b]}.exe"))
                             {
-                                File.Delete(path: "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
+                                File.Delete($"{applicationPath}\\Opera_{buildVersion[a]}_{ring[a]}_{arch[b]}.exe");
                             }
                             downloadLabel.Text = Langfile.Texts("downUnpfine");
                         }
                     };
                     try
                     {
-                        var task = myWebClient.DownloadFileTaskAsync(uri, "Opera_" + buildVersion[a] + "_" + ring[a] + "_" + arch[b] + ".exe");
+                        var task = myWebClient.DownloadFileTaskAsync(uri, $"{applicationPath}\\Opera_{buildVersion[a]}_{ring[a]}_{arch[b]}.exe");
                         list.Add(task);
                     }
                     catch (Exception ex)
@@ -408,11 +489,10 @@ namespace Portable_Opera_Updater
             NewMethod1();
             for (int i = 0; i <= 7; i++)
             {
-                if (File.Exists(@instDir[i] + "\\updates\\Version.log"))
+                if (File.Exists($"{applicationPath}\\{instDir[i]}\\updates\\Version.log"))
                 {
                     var buttons = Controls.Find("button" + (i + 1), true);
-                    string instTVersion = File.ReadAllText(@instDir[i] + "\\updates\\Version.log");
-                    string[] instVersion = NewMethod(instTVersion);
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[i]}\\updates\\Version.log").Split(new char[] { '|' });
                     if (buildVersion[i] == instVersion[0])
                     {
                         if (buttons.Length > 0)
@@ -438,10 +518,9 @@ namespace Portable_Opera_Updater
         public void CheckButtonSingle()
         {
             NewMethod1();
-            if (File.Exists(@"Opera\updates\Version.log"))
+            if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
             {
-                string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
-                string[] instVersion = NewMethod(instTVersion);
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\Opera\\updates\\Version.log").Split(new char[] { '|' });
                 switch (instVersion[1])
                 {
                     case "Opera GX":
@@ -489,22 +568,8 @@ namespace Portable_Opera_Updater
         {
             if (checkBox3.Checked)
             {
-                if ((File.Exists(instDir[4] + "\\launcher.exe")) || (File.Exists(instDir[5] + "\\launcher.exe")) || (File.Exists(instDir[6] + "\\launcher.exe")) || (File.Exists(instDir[7] + "\\launcher.exe")))
-                {
-                    checkBox2.Enabled = false;
-                }
-                else
-                {
-                    checkBox2.Enabled = true;
-                }
-                if ((File.Exists(instDir[0] + "\\launcher.exe")) || (File.Exists(instDir[1] + "\\launcher.exe")) || (File.Exists(instDir[2] + "\\launcher.exe")) || (File.Exists(instDir[3] + "\\launcher.exe")))
-                {
-                    checkBox1.Enabled = false;
-                }
-                else
-                {
-                    checkBox1.Enabled = true;
-                }
+                checkBox2.Enabled = !File.Exists($"{applicationPath}\\{instDir[4]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[5]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[6]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[7]}\\launcher.exe");
+                checkBox1.Enabled = !File.Exists($"{applicationPath}\\{instDir[0]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[1]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[2]}\\launcher.exe") && !File.Exists($"{applicationPath}\\{instDir[3]}\\launcher.exe");
                 if (button9.Enabled)
                 {
                     button9.BackColor = Color.FromArgb(224, 224, 224);
@@ -526,9 +591,9 @@ namespace Portable_Opera_Updater
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (Directory.Exists(@"Update"))
+            if (Directory.Exists($"{applicationPath}\\Update"))
             {
-                Directory.Delete(@"Update", true);
+                Directory.Delete($"{applicationPath}\\Update", true);
             }
         }
         private void Button1_MouseHover(object sender, EventArgs e)
@@ -563,10 +628,6 @@ namespace Portable_Opera_Updater
         {
             NewMethod8(7, "x64");
         }
-        private static string[] NewMethod(string instTVersion)
-        {
-            return instTVersion.Split(new char[] { '|' });
-        }
         private void NewMethod1()
         {
             for (int i = 1; i <= 8; i++)
@@ -581,13 +642,13 @@ namespace Portable_Opera_Updater
         }
         private void NewMethod2(int a, int b, int d, string[] instVersion, FileVersionInfo testm)
         {
-            if (Directory.Exists(instDir[d] + "\\Assets"))
+            if (Directory.Exists($"{applicationPath}\\{instDir[d]}\\Assets"))
             {
-                Directory.Delete(instDir[d] + "\\Assets", true);
+                Directory.Delete($"{applicationPath}\\{instDir[d]}\\Assets", true);
             }
-            if (Directory.Exists(instDir[d] + "\\" + instVersion[0]))
+            if (Directory.Exists($"{applicationPath}\\{instDir[d]}\\{instVersion[0]}"))
             {
-                Directory.Delete(instDir[d] + "\\" + instVersion[0], true);
+                Directory.Delete($"{applicationPath}\\{instDir[d]}\\{instVersion[0]}", true);
             }
             Thread.Sleep(500);
             NewMethod6(a, b, d, testm);
@@ -598,49 +659,58 @@ namespace Portable_Opera_Updater
             var buttons2 = Controls.Find("button" + b, true);
             if (instVersion[0] == buildVersion[c])
             {
-                if (instVersion[2] == "x86")
+                switch (instVersion[2])
                 {
-                    if (buttons.Length > 0)
-                    {
-                        var button = (Button)buttons[0];
-                        button.BackColor = Color.Green;
-                    }
-                }
-                else if (instVersion[2] == "x64")
-                {
-                    if (buttons2.Length > 0)
-                    {
-                        var button = (Button)buttons2[0];
-                        button.BackColor = Color.Green;
-                    }
+                    case "x86":
+                        {
+                            if (buttons.Length > 0)
+                            {
+                                var button = (Button)buttons[0];
+                                button.BackColor = Color.Green;
+                            }
+                            break;
+                        }
+                    case "x64":
+                        {
+                            if (buttons2.Length > 0)
+                            {
+                                var button = (Button)buttons2[0];
+                                button.BackColor = Color.Green;
+                            }
+                            break;
+                        }
                 }
             }
             else if (instVersion[0] != buildVersion[c])
             {
-                if (instVersion[2] == "x86")
+                switch (instVersion[2])
                 {
-                    if (buttons.Length > 0)
-                    {
-                        var button = (Button)buttons[0];
-                        button.BackColor = Color.Red;
-                    }
-                }
-                else if (instVersion[2] == "x64")
-                {
-                    if (buttons2.Length > 0)
-                    {
-                        var button = (Button)buttons2[0];
-                        button.BackColor = Color.Red;
-                    }
+                    case "x86":
+                        {
+                            if (buttons.Length > 0)
+                            {
+                                var button = (Button)buttons[0];
+                                button.BackColor = Color.Red;
+                            }
+                            break;
+                        }
+                    case "x64":
+                        {
+                            if (buttons2.Length > 0)
+                            {
+                                var button = (Button)buttons2[0];
+                                button.BackColor = Color.Red;
+                            }
+                            break;
+                        }
                 }
             }
         }
         private async void NewMethod4(int a, int b, int c, int d)
         {
-            if (File.Exists(@instDir + "\\updates\\Version.log"))
+            if (File.Exists($"{applicationPath}\\{instDir}\\updates\\Version.log"))
             {
-                string instTVersion = File.ReadAllText(@instDir[a] + "\\updates\\Version.log");
-                string[] instVersion = NewMethod(instTVersion);
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
                 if (instVersion[0] == buildVersion[b])
                 {
                     if (checkBox4.Checked)
@@ -662,12 +732,11 @@ namespace Portable_Opera_Updater
                 await DownloadFile(a, b, c, d);
             }
         }
-        private async void NewMethod5(int a, int b, int c, int d)
+        private async Task NewMethod5(int a, int b, int c, int d)
         {
-            if (File.Exists(@"Opera\updates\Version.log"))
+            if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
             {
-                string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
-                string[] instVersion = NewMethod(instTVersion);
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
                 if ((instVersion[0] == buildVersion[a]) && (instVersion[1] == ring[a]) && (instVersion[2] == arch[b]))
                 {
                     if (checkBox4.Checked)
@@ -691,24 +760,24 @@ namespace Portable_Opera_Updater
         }
         private void NewMethod6(int a, int b, int d, FileVersionInfo testm)
         {
-            if (!Directory.Exists(instDir[d]))
+            if (!Directory.Exists($"{applicationPath}\\{instDir[d]}"))
             {
-                Directory.CreateDirectory(instDir[d]);
+                Directory.CreateDirectory($"{applicationPath}\\{instDir[d]}");
             }
-            if (!Directory.Exists(instDir[d] + "\\updates"))
+            if (!Directory.Exists($"{applicationPath}\\{instDir[d]}\\updates"))
             {
-                Directory.CreateDirectory(instDir[d] + "\\updates");
+                Directory.CreateDirectory($"{applicationPath}\\{instDir[d]}\\updates");
             }
             Thread.Sleep(500);
-            File.Copy(@"Update\" + instDir[d] + "\\launcher.exe", instDir[d] + "\\launcher.exe", true);
-            File.Copy(@"Update\" + instDir[d] + "\\launcher.visualelementsmanifest.xml", instDir[d] + "\\launcher.visualelementsmanifest.xml", true);
-            File.Copy(@"Update\" + instDir[d] + "\\Resources.pri", instDir[d] + "\\Resources.pri", true);
-            File.Delete(@"Update\" + instDir[d] + "\\launcher.exe");
-            File.Delete(@"Update\" + instDir[d] + "\\launcher.visualelementsmanifest.xml");
-            File.Delete(@"Update\" + instDir[d] + "\\Resources.pri");
-            Directory.Move(@"Update\" + instDir[d] + "\\Assets", instDir[d] + "\\Assets");
-            Directory.Move(@"Update\" + instDir[d], instDir[d] + "\\" + testm.FileVersion);
-            File.WriteAllText(instDir[d] + "\\updates\\Version.log", testm.FileVersion + "|" + ring[a] + "|" + arch[b]);
+            File.Copy($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe", $"{applicationPath}\\{instDir[d]}\\launcher.exe", true);
+            File.Copy($"{applicationPath}\\Update\\{instDir[d]}\\launcher.visualelementsmanifest.xml", $"{applicationPath}\\{instDir[d]}\\launcher.visualelementsmanifest.xml", true);
+            File.Copy($"{applicationPath}\\Update\\{instDir[d]}\\Resources.pri", $"{applicationPath}\\{instDir[d]}\\Resources.pri", true);
+            File.Delete($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe");
+            File.Delete($"{applicationPath}\\Update\\{instDir[d]}\\launcher.visualelementsmanifest.xml");
+            File.Delete($"{applicationPath}\\Update\\{instDir[d]}\\Resources.pri");
+            Directory.Move($"{applicationPath}\\Update\\{instDir[d]}\\Assets", $"{applicationPath}\\{instDir[d]}\\Assets");
+            Directory.Move($"{applicationPath}\\Update\\{instDir[d]}", $"{applicationPath}\\{instDir[d]}\\{testm.FileVersion}");
+            File.WriteAllText($"{applicationPath}\\{instDir[d]}\\updates\\Version.log", testm.FileVersion + "|" + ring[a] + "|" + arch[b]);
             if (checkBox3.Checked)
             {
                 CheckButton();
@@ -720,10 +789,9 @@ namespace Portable_Opera_Updater
         }
         private async Task NewMethod7(int a, int b, int c, int d)
         {
-            if (Directory.Exists(instDir[a]) && File.Exists(instDir[a] + "\\updates\\Version.log"))
+            if (Directory.Exists($"{applicationPath}\\{instDir[a]}") && File.Exists($"{applicationPath}\\{instDir[a]}\\updates\\Version.log"))
             {
-                string instTVersion = File.ReadAllText(instDir[a] + "\\updates\\Version.log");
-                string[] instVersion = NewMethod(instTVersion);
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
                 if (instVersion[0] != buildVersion[a])
                 {
                     await DownloadFile(a, b, c, d);
@@ -736,19 +804,17 @@ namespace Portable_Opera_Updater
             var button = (Button)buttons[0];
             if (!checkBox3.Checked)
             {
-                if (File.Exists(@"Opera\updates\Version.log"))
+                if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
                 {
-                    string instTVersion = File.ReadAllText(@"Opera\updates\Version.log");
-                    string[] instVersion = NewMethod(instTVersion);
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
                     NewMethod9(a, arch, button, instVersion);
                 }
             }
             if (checkBox3.Checked)
             {
-                if (File.Exists(instDir[a] + "\\updates\\Version.log"))
+                if (File.Exists($"{applicationPath}\\{instDir[a]}\\updates\\Version.log"))
                 {
-                    string instTVersion = File.ReadAllText(instDir[a] + "\\updates\\Version.log");
-                    string[] instVersion = NewMethod(instTVersion);
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
                     NewMethod9(a, arch, button, instVersion);
                 }
             }
@@ -765,7 +831,7 @@ namespace Portable_Opera_Updater
                 toolTip.SetToolTip(button, String.Empty);
             }
         }
-        private void CheckUpdate()
+        private async Task CheckUpdate()
         {
             GroupBox groupBoxupdate = new GroupBox
             {
@@ -835,11 +901,37 @@ namespace Portable_Opera_Updater
                 var response = request.GetResponse();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    var version = reader.ReadToEnd();
-                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
-                    versionLabel.Text = testm.FileVersion + "  >>> " + version;
-                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    Version version = new Version(reader.ReadToEnd());
+                    Version testm = new Version(FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe").FileVersion);
+                    versionLabel.Text = testm + "  >>> " + version;
+                    if (version > testm)
                     {
+                        for (int i = 0; i < CommandLineArgs.GetLength(0); i++)
+                        {
+                            if (CommandLineArgs[i].ToLower().Equals("-updateall"))
+                            {
+                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                                using (WebClient myWebClient2 = new WebClient())
+                                {
+                                    myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorOperaUpd/releases/download/v{version}/Portable.Opera.Updater.v{version}.7z", $"{applicationPath}\\Portable.Opera.Updater.v{version}.7z");
+                                }
+                                File.AppendAllText(applicationPath + "\\Update.cmd", "@echo off" + "\r\n" +
+                                    "timeout /t 5 /nobreak" + "\r\n" +
+                                    "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Opera Updater.exe\"" + " -y\r\n" +
+                                    "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Opera Updater.exe\" -UpdateAll\r\n" +
+                                    "del /f /q \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\"\r\n" +
+                                    "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\r\n" +
+                                    "exit\r\n");
+
+                                string arguments = " /c call \"" + applicationPath + "\\Update.cmd\"";
+                                Process process = new Process();
+                                process.StartInfo.FileName = "cmd.exe";
+                                process.StartInfo.Arguments = arguments;
+                                process.Start();
+                                Close();
+                                await Task.Delay(2000);
+                            }
+                        }
                         Controls.Add(groupBoxupdate);
                         groupBox3.Enabled = false;
                     }
@@ -862,17 +954,17 @@ namespace Portable_Opera_Updater
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     using (WebClient myWebClient2 = new WebClient())
                     {
-                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorOperaUpd/releases/download/v{version}/Portable.Opera.Updater.v{version}.7z", @"Portable.Opera.Updater.v" + version + ".7z");
+                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorOperaUpd/releases/download/v{version}/Portable.Opera.Updater.v{version}.7z", $"{applicationPath}\\Portable.Opera.Updater.v{version}.7z");
                     }
-                    File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
-                        "timeout /t 1 /nobreak" + "\n" +
-                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Opera Updater.exe\"" + " -y\n" +
-                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Opera Updater.exe\"\n" +
-                        "del /f /q \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\"\n" +
-                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\n" +
-                        "exit\n");
+                    File.AppendAllText(applicationPath + "\\Update.cmd", "@echo off" + "\r\n" +
+                        "timeout /t 1 /nobreak" + "\r\n" +
+                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Opera Updater.exe\"" + " -y\r\n" +
+                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Opera Updater.exe\"\r\n" +
+                        "del /f /q \"" + applicationPath + "\\Portable.Opera.Updater.v" + version + ".7z\"\r\n" +
+                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\r\n" +
+                        "exit\r\n");
 
-                    string arguments = " /c call Update.cmd";
+                    string arguments = " /c call \"" + applicationPath + "\\Update.cmd\"";
                     Process process = new Process();
                     process.StartInfo.FileName = "cmd.exe";
                     process.StartInfo.Arguments = arguments;
@@ -896,11 +988,11 @@ namespace Portable_Opera_Updater
                         {
                             using (WebClient myWebClient2 = new WebClient())
                             {
-                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Launcher/Launcher.7z", @"Launcher.7z");
+                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorOperaUpd/raw/master/Launcher/Launcher.7z", applicationPath + "\\Launcher.7z");
                             }
-                            string arguments = " x " + @"Launcher.7z" + " -o" + @"Bin\\Launcher" + " -y";
+                            string arguments = " x \"" + applicationPath + "\\Launcher.7z" + " -o\"" + applicationPath + "\\Bin\\Launcher\" -y";
                             Process process = new Process();
-                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.FileName = applicationPath + "\\Bin\\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                             process.StartInfo.Arguments = arguments;
                             process.Start();
@@ -908,13 +1000,13 @@ namespace Portable_Opera_Updater
                             File.Delete(@"Launcher.7z");
                             foreach (string launcher in instDir)
                             {
-                                if (File.Exists(launcher + " Launcher.exe"))
+                                if (File.Exists(applicationPath + "\\" + launcher + " Launcher.exe"))
                                 {
-                                    FileVersionInfo binLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\" + launcher + " Launcher.exe");
-                                    FileVersionInfo istLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\" + launcher + " Launcher.exe");
-                                    if (Convert.ToDecimal(binLauncher.FileVersion) > Convert.ToDecimal(istLauncher.FileVersion))
+                                    Version binLauncher = new Version(FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\" + launcher + " Launcher.exe").FileVersion);
+                                    Version istLauncher = new Version(FileVersionInfo.GetVersionInfo(applicationPath + "\\" + launcher + " Launcher.exe").FileVersion);
+                                    if (binLauncher > istLauncher)
                                     {
-                                        File.Copy(@"bin\\Launcher\\" + launcher + " Launcher.exe", launcher + " Launcher.exe", true);
+                                        File.Copy(applicationPath + "\\bin\\Launcher\\" + launcher + " Launcher.exe", applicationPath + "\\" + launcher + " Launcher.exe", true);
                                     }
                                 }
                             }
@@ -930,12 +1022,13 @@ namespace Portable_Opera_Updater
             {
 
             }
+            await Task.WhenAll();
         }
         private void VersionsInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileVersionInfo updVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe");
-            FileVersionInfo launcherVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Opera Launcher.exe");
-            MessageBox.Show("Updater Version - " + updVersion.FileVersion + "\nLauncher Version - " + launcherVersion.FileVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Version updVersion = new Version(FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Opera Updater.exe").FileVersion);
+            Version launcherVersion = new Version(FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Opera Launcher.exe").FileVersion);
+            MessageBox.Show("Updater Version - " + updVersion + "\r\nLauncher Version - " + launcherVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void RegistrierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
