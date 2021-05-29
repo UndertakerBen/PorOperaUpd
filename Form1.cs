@@ -455,7 +455,7 @@ namespace Portable_Opera_Updater
                             }
                             if (!File.Exists($"{applicationPath}\\{instDir[d]} Launcher.exe"))
                             {
-                                File.Copy($"{@applicationPath}\\Bin\\Launcher\\{instDir[d]} Launcher.exe", applicationPath + "\\" + instDir[d] + " Launcher.exe");
+                                File.Copy($"{@applicationPath}\\Bin\\Launcher\\{instDir[d]} Launcher.exe", $"{applicationPath}\\{instDir[d]} Launcher.exe");
                             }
                             if (File.Exists($"{applicationPath}\\Opera_{buildVersion[a]}_{ring[a]}_{arch[b]}.exe"))
                             {
@@ -708,10 +708,10 @@ namespace Portable_Opera_Updater
         }
         private async void NewMethod4(int a, int b, int c, int d)
         {
-            if (File.Exists($"{applicationPath}\\{instDir}\\updates\\Version.log"))
+            if (File.Exists($"{applicationPath}\\{instDir[a]}\\updates\\Version.log"))
             {
                 string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
-                if (instVersion[0] == buildVersion[b])
+                if (instVersion[0] == buildVersion[a])
                 {
                     if (checkBox4.Checked)
                     {
@@ -736,7 +736,7 @@ namespace Portable_Opera_Updater
         {
             if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
             {
-                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\Opera\\updates\\Version.log").Split(new char[] { '|' });
                 if ((instVersion[0] == buildVersion[a]) && (instVersion[1] == ring[a]) && (instVersion[2] == arch[b]))
                 {
                     if (checkBox4.Checked)
@@ -806,7 +806,7 @@ namespace Portable_Opera_Updater
             {
                 if (File.Exists($"{applicationPath}\\Opera\\updates\\Version.log"))
                 {
-                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\Opera\\updates\\Version.log").Split(new char[] { '|' });
                     NewMethod9(a, arch, button, instVersion);
                 }
             }
