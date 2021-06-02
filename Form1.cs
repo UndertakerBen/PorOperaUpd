@@ -418,7 +418,7 @@ namespace Portable_Opera_Updater
                             if ((File.Exists($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe")) && (File.Exists($"{applicationPath}\\{instDir[d]}\\updates\\Version.log")))
                             {
                                 string instTVersion = File.ReadAllText($"{applicationPath}\\{instDir[d]}\\updates\\Version.log");
-                                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' });
+                                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[d]}\\updates\\Version.log").Split(new char[] { '|' });
                                 FileVersionInfo testm = FileVersionInfo.GetVersionInfo($"{applicationPath}\\Update\\{instDir[d]}\\launcher.exe");
                                 if (checkBox3.Checked)
                                 {
