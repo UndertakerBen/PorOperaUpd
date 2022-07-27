@@ -38,7 +38,7 @@ namespace Portable_Opera_Updater
                     byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://autoupdate.geo.opera.com/{product[i, 0]}/netinstaller/{product[i, 1]}/windows/{product[i, 2]}");
                     request.Method = "POST";
-                    request.UserAgent = "Opera NetInstaller/74.0.3911.160";
+                    //request.UserAgent = "Opera NetInstaller/74.0.3911.160";
                     request.ContentLength = byteArray.Length;
                     Stream dataStream = request.GetRequestStream();
                     dataStream.Write(byteArray, 0, byteArray.Length);
