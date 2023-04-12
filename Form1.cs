@@ -33,12 +33,13 @@ namespace Portable_Opera_Updater
             {
                 for (int i = 0; i <= 7; i++)
                 {
+                    string unixTime = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds().ToString();
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    string postData = "NzI2ODkyZmJiODE4NTA0MmE1YzY3Y2MyNDhmMTZhNzQ2Yjc0OGYyYjE0NGY1YzRhZjJkM2RiOTU5YzQ1ZmRiMDp7ImNvdW50cnkiOiJERSIsImh0dHBfcmVmZXJyZXIiOiJodHRwczovL3d3dy5vcGVyYS5jb20vZGUvY29tcHV0ZXIvdGhhbmtzP25pPWVhcGd4Jm9zPXdpbmRvd3MiLCJpbnN0YWxsZXJfbmFtZSI6Ik9wZXJhR1hTZXR1cC5leGUiLCJwcm9kdWN0Ijoib3BlcmFfZ3giLCJxdWVyeSI6Ii9vcGVyYV9neC9zdGFibGUvd2luZG93cz91dG1fdHJ5YWdhaW49eWVzJnV0bV9zb3VyY2U9Z29vZ2xlX3ZpYV9vcGVyYV9jb20mdXRtX21lZGl1bT1vc2UmdXRtX2NhbXBhaWduPShub25lKV92aWFfb3BlcmFfY29tX2h0dHBzJmh0dHBfcmVmZXJyZXI9aHR0cHMlM0ElMkYlMkZ3d3cuZ29vZ2xlLmNvbSUyRiZ1dG1fc2l0ZT1vcGVyYV9jb20mdXRtX2xhc3RwYWdlPW9wZXJhLmNvbS9neCZkbF90b2tlbj0zNDkyNzQxNSIsInRpbWVzdGFtcCI6IjE2MTQ0MTg0NzcuNzExMCIsInVzZXJhZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS84OC4wLjQzMjQuMTUwIFNhZmFyaS81MzcuMzYgT1BSLzc0LjAuMzkxMS4xNjAiLCJ1dG0iOnsiY2FtcGFpZ24iOiIobm9uZSlfdmlhX29wZXJhX2NvbV9odHRwcyIsImxhc3RwYWdlIjoib3BlcmEuY29tL2d4IiwibWVkaXVtIjoib3NlIiwic2l0ZSI6Im9wZXJhX2NvbSIsInNvdXJjZSI6Imdvb2dsZV92aWFfb3BlcmFfY29tIiwidHJ5YWdhaW4iOiJ5ZXMifSwidXVpZCI6IjJjZTM4MDM0LWNlYzYtNDdlOS1iZDE4LTg0MmFlNTM4MjJhZSJ9";
+                    string postData = Convert.ToBase64String(Encoding.UTF8.GetBytes("1111111111111111111111111111111111111111111111111111111111111111:{\"country\":\"DE\",\"http_referrer\":\"https://www.opera.com/\",\"installer_name\":\"OperaSetup.exe\",\"product\":{\"name\":\"opera\"},\"query\":\"/opera/stable/windows?utm_tryagain=yes\",\"system\":{\"platform\":{\"arch\":\"x86_64\",\"opsys\":\"Windows\",\"opsys-version\":\"10\",\"package\":\"EXE\"}},\"timestamp\":\"" + unixTime + "\",\"uuid\":\"11111111-1111-1111-1111-111111111111\"}"));
                     byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://autoupdate.geo.opera.com/{product[i, 0]}/netinstaller/{product[i, 1]}/windows/{product[i, 2]}");
                     request.Method = "POST";
-                    //request.UserAgent = "Opera NetInstaller/74.0.3911.160";
+                    //request.UserAgent = "Opera NetInstaller/97.0.4719.63";
                     request.ContentLength = byteArray.Length;
                     Stream dataStream = request.GetRequestStream();
                     dataStream.Write(byteArray, 0, byteArray.Length);
